@@ -10,7 +10,7 @@ func TestJsonFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &FormatterConfig{
+	c := &Config{
 		Format: "json",
 	}
 	out, _ := OutputData(movie, c)
@@ -42,7 +42,7 @@ func TestJsonFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &FormatterConfig{
+	c := &Config{
 		Format: "json",
 	}
 	out, _ := OutputData(movies, c)

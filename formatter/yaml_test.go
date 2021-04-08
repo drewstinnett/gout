@@ -11,7 +11,7 @@ func TestYamlFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &FormatterConfig{
+	c := &Config{
 		Format: "yaml",
 	}
 	out, _ := OutputData(movie, c)
@@ -42,7 +42,7 @@ func TestYamlFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &FormatterConfig{
+	c := &Config{
 		Format: "yaml",
 	}
 	out, _ := OutputData(movies, c)
