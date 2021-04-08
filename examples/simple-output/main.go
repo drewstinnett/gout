@@ -29,7 +29,7 @@ func main() {
 	}
 	// Single Entry
 	log.Println("Printing single entry")
-	person := &Sample{FirstName: "Drew", LastName: "Stinnett", Age: 32}
+	person := &Sample{FirstName: "Jason", LastName: "Vorhees", Age: 11}
 	out, err := formatter.OutputData(person, c)
 	fmt.Println(string(out))
 	if err != nil {
@@ -38,9 +38,9 @@ func main() {
 
 	log.Println("Printing multiple entry")
 	var people = &SampleList{
-		Sample{FirstName: "Drew", LastName: "Stinnett", Age: 42},
-		Sample{FirstName: "Lela", LastName: "Stinnett", Age: 45},
-		Sample{FirstName: "James", LastName: "Stinnett", Age: 14},
+		Sample{FirstName: "Jason", LastName: "Vorhees", Age: 11},
+		Sample{FirstName: "Freddy", LastName: "Krueger", Age: 35},
+		Sample{FirstName: "Michael", LastName: "Myers", Age: 13},
 	}
 	out, err = formatter.OutputData(people, c)
 	fmt.Println(string(out))
