@@ -2,6 +2,15 @@
 on: [push, pull_request]
 name: Test
 jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v2
+        with:
+          version: latest
   test:
     strategy:
       matrix:
@@ -16,4 +25,4 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Test
-        run: go test ./...
+        run: go test $(go list ./... | grep -v example)
