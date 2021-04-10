@@ -8,7 +8,7 @@ import (
 	"sort"
 )
 
-// TsvFormatter Tab Seperatted Value output
+// TsvFormatter Tab Seperatted Value output.
 type TsvFormatter struct{}
 
 // Format How do we actually format YAML?
@@ -36,6 +36,7 @@ func (y TsvFormatter) Format(data interface{}) ([]byte, error) {
 		return nil, fmt.Errorf("Unknown type of data for tsv: %s", objType)
 	}
 	returnString := ""
+
 	for _, item := range jsonSlice {
 		var keys []string
 		for k := range item {
@@ -45,7 +46,7 @@ func (y TsvFormatter) Format(data interface{}) ([]byte, error) {
 		for _, k := range keys {
 			returnString += fmt.Sprint(item[k], "\t")
 		}
-		returnString += fmt.Sprint("\n")
+		returnString += "\n"
 	}
 	b := []byte(returnString)
 	return b, nil
