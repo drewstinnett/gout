@@ -4,13 +4,16 @@ import (
 	"encoding/json"
 )
 
-type JsonFormatter struct{}
+// JSONFormatter Basic struct
+type JSONFormatter struct{}
 
-func (j JsonFormatter) Format(data interface{}) ([]byte, error) {
+// Format Do the formatting here
+func (j JSONFormatter) Format(data interface{}) ([]byte, error) {
 	return json.MarshalIndent(data, "", "  ")
 }
 
-func (j JsonFormatter) Output(data interface{}) ([]byte, error) {
+// Output Capture output of JSON format
+func (j JSONFormatter) Output(data interface{}) ([]byte, error) {
 	b, err := j.Format(data)
 	if err != nil {
 		return nil, err

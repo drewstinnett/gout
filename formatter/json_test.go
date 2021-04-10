@@ -2,7 +2,7 @@ package formatter
 
 import "testing"
 
-func TestJsonFormatStruct(t *testing.T) {
+func TestJSONFormatStruct(t *testing.T) {
 	movie := struct {
 		Title string
 		Year  int

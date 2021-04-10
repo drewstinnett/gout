@@ -16,7 +16,8 @@ type Formatter interface {
 // Formatters Map of the different types of formatting we do here
 var Formatters = map[string]Formatter{
 	"yaml": YamlFormatter{},
-	"json": JsonFormatter{},
+	"json": JSONFormatter{},
+	"tsv":  TsvFormatter{},
 	//"plain": PlainFormatter{},
 }
 
