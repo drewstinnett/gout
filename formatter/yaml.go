@@ -14,9 +14,6 @@ func (y yamlFormatter) format(data interface{}, config *Config) ([]byte, error) 
 
 // Output Do the output return string here
 func (y yamlFormatter) output(data interface{}, config *Config) ([]byte, error) {
-	b, err := y.format(data, config)
-	if err != nil {
-		return nil, err
-	}
+	b, _ := y.format(data, config)
 	return b, nil
 }

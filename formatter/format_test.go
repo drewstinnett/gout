@@ -15,9 +15,7 @@ func TestBadFormat(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Using a bad Format did not cause an error")
 	}
-
 }
-
 func TestGetFormats(t *testing.T) {
 	t.Parallel()
 	formats := formatter.GetFormats()

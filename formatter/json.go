@@ -16,9 +16,6 @@ func (j jsonFormatter) format(data interface{}, config *Config) ([]byte, error) 
 
 // Output Capture output of JSON format
 func (j jsonFormatter) output(data interface{}, config *Config) ([]byte, error) {
-	b, err := j.format(data, config)
-	if err != nil {
-		return nil, err
-	}
+	b, _ := j.format(data, config)
 	return b, nil
 }

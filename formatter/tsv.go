@@ -15,10 +15,7 @@ type tsvFormatter struct{}
 
 // Format How do we actually format YAML?
 func (t tsvFormatter) format(data interface{}, config *Config) ([]byte, error) {
-	j, err := json.Marshal(data)
-	if err != nil {
-		return nil, err
-	}
+	j, _ := json.Marshal(data)
 	var jsonSlice []map[string]interface{}
 	switch objType := reflect.ValueOf(data).Elem().Kind(); objType {
 	case reflect.Struct:
@@ -60,9 +57,6 @@ func (t tsvFormatter) format(data interface{}, config *Config) ([]byte, error) {
 
 // Output Do the output return string here
 func (t tsvFormatter) output(data interface{}, config *Config) ([]byte, error) {
-	b, err := t.format(data, config)
-	if err != nil {
-		return nil, err
-	}
+	b, nil := t.format(data, config)
 	return b, nil
 }
