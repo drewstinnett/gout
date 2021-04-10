@@ -7,6 +7,7 @@ import (
 )
 
 func TestPlainFormatStruct(t *testing.T) {
+	t.Parallel()
 	movie := struct {
 		Title string
 		Year  int
@@ -30,6 +31,7 @@ func TestPlainFormatStruct(t *testing.T) {
 }
 
 func TestPlainFormatStructList(t *testing.T) {
+	t.Parallel()
 	movies := []struct {
 		Title string
 		Year  int

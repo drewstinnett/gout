@@ -7,7 +7,7 @@ import (
 )
 
 func TestYamlFormatStruct(t *testing.T) {
-	//movie := &Movie{Title: "Halloween", Year: 1978}
+	t.Parallel()
 	movie := struct {
 		Title string
 		Year  int
@@ -33,6 +33,7 @@ year: 1978
 }
 
 func TestYamlFormatStructList(t *testing.T) {
+	t.Parallel()
 	movies := []struct {
 		Title string
 		Year  int

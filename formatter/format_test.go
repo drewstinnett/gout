@@ -7,6 +7,7 @@ import (
 )
 
 func TestInvalidOutputFormat(t *testing.T) {
+	t.Parallel()
 	badFormat := "ThisWillNeverBeAValidMarkdown"
 	_, got := formatter.Formatters[badFormat]
 	want := false
@@ -28,6 +29,7 @@ func TestInvalidOutputFormat(t *testing.T) {
 }
 
 func TestGetFormats(t *testing.T) {
+	t.Parallel()
 	formats := formatter.GetFormats()
 	if !stringInSlice("json", formats) {
 		t.Fatalf("GetFormats did not return json")

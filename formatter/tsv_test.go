@@ -8,6 +8,7 @@ import (
 )
 
 func TestTSVFormatStruct(t *testing.T) {
+	t.Parallel()
 	//movie := &Movie{Title: "Halloween", Year: 1978}
 	movie := struct {
 		Title string
@@ -32,6 +33,7 @@ func TestTSVFormatStruct(t *testing.T) {
 }
 
 func TestTSVFormatStructList(t *testing.T) {
+	t.Parallel()
 	movies := []struct {
 		Title string
 		Year  int
@@ -57,5 +59,4 @@ func TestTSVFormatStructList(t *testing.T) {
 	if !strings.Contains(got, "Phantasm 1979") {
 		t.Fatalf(`%s does not contain "Phantasm 1979"`, got)
 	}
-
 }

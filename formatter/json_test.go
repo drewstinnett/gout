@@ -7,6 +7,7 @@ import (
 )
 
 func TestJSONFormatStruct(t *testing.T) {
+	t.Parallel()
 	movie := struct {
 		Title string
 		Year  int
@@ -33,6 +34,7 @@ func TestJSONFormatStruct(t *testing.T) {
 }
 
 func TestJsonFormatStructList(t *testing.T) {
+	t.Parallel()
 	movies := []struct {
 		Title string
 		Year  int
