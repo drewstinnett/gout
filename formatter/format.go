@@ -7,21 +7,26 @@ import (
 // Starting with code similar to:
 // https://github.com/hashicorp/vault/blob/master/command/format.go
 
-// Formatter Generic formatter interface, all interfaces should provide a structure like this
-type Formatter interface {
-	Output(data interface{}) ([]byte, error)
-	Format(data interface{}) ([]byte, error)
+// Formatter Generic formatter interface, all interfaces should provide a
+// structure like this. All formatters must implement an output and format
+// function. Output will do the actual data output, running Format first, to do
+// the actual data formatting
+type formatter interface {
+	output(data interface{}) ([]byte, error)
+	format(data interface{}) ([]byte, error)
 }
 
-// formatters Map of the different types of formatting we do here
-var formatters = map[string]Formatter{
+// formatters Map of the different types of formatting we do here. The
+// formatter must be registered in this map to be available
+var formatters = map[string]formatter{
 	"yaml":  YamlFormatter{},
 	"json":  JSONFormatter{},
 	"tsv":   TsvFormatter{},
 	"plain": PlainFormatter{},
 }
 
-// GetFormats Return a list of formats available in Formatters
+// GetFormats Return a list of formats available in formatters. Useful if you
+// need to check what formatters are available in a standardized way
 func GetFormats() []string {
 	keys := make([]string, len(formatters))
 
@@ -33,12 +38,15 @@ func GetFormats() []string {
 	return keys
 }
 
-// Config Structure to pass to formatters.  Should include enough config to do the output
+// Config Structure to pass to formatters.  Should include enough config to do
+// the output. You must set the Format here to something like yaml, json,
+// plain, or any other value returned by the GetFormats function
 type Config struct {
 	Format string
 }
 
-// OutputData Main function to return the data we will be printing to the screen
+// OutputData Main function to return the data we will be printing to the
+// screen. This is where the magic happens!
 func OutputData(data interface{}, config *Config) ([]byte, error) {
 
 	formatter, ok := formatters[config.Format]
@@ -47,7 +55,7 @@ func OutputData(data interface{}, config *Config) ([]byte, error) {
 		return nil, err
 	}
 
-	parsed, err := formatter.Output(data)
+	parsed, err := formatter.output(data)
 	if err != nil {
 		return nil, err
 	}
