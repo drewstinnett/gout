@@ -12,7 +12,7 @@ import (
 type TsvFormatter struct{}
 
 // Format How do we actually format YAML?
-func (y TsvFormatter) Format(data interface{}) ([]byte, error) {
+func (t TsvFormatter) Format(data interface{}) ([]byte, error) {
 	j, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
@@ -53,8 +53,8 @@ func (y TsvFormatter) Format(data interface{}) ([]byte, error) {
 }
 
 // Output Do the output return string here
-func (y TsvFormatter) Output(data interface{}) ([]byte, error) {
-	b, err := y.Format(data)
+func (t TsvFormatter) Output(data interface{}) ([]byte, error) {
+	b, err := t.Format(data)
 	if err != nil {
 		return nil, err
 	}
