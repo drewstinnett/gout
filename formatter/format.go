@@ -15,10 +15,10 @@ type Formatter interface {
 
 // Formatters Map of the different types of formatting we do here
 var Formatters = map[string]Formatter{
-	"yaml": YamlFormatter{},
-	"json": JSONFormatter{},
-	"tsv":  TsvFormatter{},
-	//"plain": PlainFormatter{},
+	"yaml":  YamlFormatter{},
+	"json":  JSONFormatter{},
+	"tsv":   TsvFormatter{},
+	"plain": PlainFormatter{},
 }
 
 // GetFormats Return a list of formats available in Formatters

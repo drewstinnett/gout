@@ -4,18 +4,20 @@ import (
 	"fmt"
 )
 
+// PlainFormatter Just output in raw go format
 type PlainFormatter struct{}
 
+// Format Do the actual formatting here
 func (j PlainFormatter) Format(data interface{}) ([]byte, error) {
 	b := []byte(fmt.Sprintf("%+v", data.(interface{})))
 	return b, nil
 }
 
-func (j PlainFormatter) Output(data interface{}) error {
+// Output Capture the output
+func (j PlainFormatter) Output(data interface{}) ([]byte, error) {
 	b, err := j.Format(data)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	fmt.Printf("%s\n", string(b))
-	return nil
+	return b, nil
 }
