@@ -6,13 +6,15 @@ import (
 	"log"
 	"reflect"
 	"sort"
+
+	"github.com/drewstinnett/go-output-format/helpers"
 )
 
 // TsvFormatter Tab Seperatted Value output.
 type tsvFormatter struct{}
 
 // Format How do we actually format YAML?
-func (t tsvFormatter) format(data interface{}) ([]byte, error) {
+func (t tsvFormatter) format(data interface{}, config *Config) ([]byte, error) {
 	j, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
@@ -44,7 +46,11 @@ func (t tsvFormatter) format(data interface{}) ([]byte, error) {
 		}
 		sort.Strings(keys)
 		for _, k := range keys {
-			returnString += fmt.Sprint(item[k], "\t")
+			if len(config.LimitFields) == 0 {
+				returnString += fmt.Sprint(item[k], "\t")
+			} else if helpers.StringInSlice(k, config.LimitFields) {
+				returnString += fmt.Sprint(item[k], "\t")
+			}
 		}
 		returnString += "\n"
 	}
@@ -53,8 +59,8 @@ func (t tsvFormatter) format(data interface{}) ([]byte, error) {
 }
 
 // Output Do the output return string here
-func (t tsvFormatter) output(data interface{}) ([]byte, error) {
-	b, err := t.format(data)
+func (t tsvFormatter) output(data interface{}, config *Config) ([]byte, error) {
+	b, err := t.format(data, config)
 	if err != nil {
 		return nil, err
 	}

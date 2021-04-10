@@ -8,14 +8,14 @@ import (
 type plainFormatter struct{}
 
 // Format Do the actual formatting here
-func (p plainFormatter) format(data interface{}) ([]byte, error) {
+func (p plainFormatter) format(data interface{}, config *Config) ([]byte, error) {
 	b := []byte(fmt.Sprintf("%+v", data.(interface{})))
 	return b, nil
 }
 
 // Output Capture the output
-func (p plainFormatter) output(data interface{}) ([]byte, error) {
-	b, err := p.format(data)
+func (p plainFormatter) output(data interface{}, config *Config) ([]byte, error) {
+	b, err := p.format(data, config)
 	if err != nil {
 		return nil, err
 	}

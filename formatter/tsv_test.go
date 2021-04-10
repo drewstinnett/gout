@@ -7,9 +7,31 @@ import (
 	"github.com/drewstinnett/go-output-format/formatter"
 )
 
+func TestTSVField(t *testing.T) {
+	movie := struct {
+		Title string
+		Year  int
+	}{
+		"Halloween",
+		1978,
+	}
+	c := &formatter.Config{
+		Format:      "tsv",
+		LimitFields: []string{"Title"},
+	}
+	out, _ := formatter.OutputData(&movie, c)
+	got := strings.TrimSpace(string(out))
+
+	want := "Halloween"
+	if got != want {
+		t.Fatalf(`values not equal ("%s" != "%s")`,
+			got,
+			want,
+		)
+	}
+}
 func TestTSVFormatStruct(t *testing.T) {
 	t.Parallel()
-	//movie := &Movie{Title: "Halloween", Year: 1978}
 	movie := struct {
 		Title string
 		Year  int

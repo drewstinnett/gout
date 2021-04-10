@@ -12,8 +12,8 @@ import (
 // function. Output will do the actual data output, running Format first, to do
 // the actual data formatting
 type formatter interface {
-	output(data interface{}) ([]byte, error)
-	format(data interface{}) ([]byte, error)
+	output(data interface{}, config *Config) ([]byte, error)
+	format(data interface{}, config *Config) ([]byte, error)
 }
 
 // formatters Map of the different types of formatting we do here. The
@@ -42,7 +42,8 @@ func GetFormats() []string {
 // the output. You must set the Format here to something like yaml, json,
 // plain, or any other value returned by the GetFormats function
 type Config struct {
-	Format string
+	Format      string
+	LimitFields []string
 }
 
 // OutputData Main function to return the data we will be printing to the
@@ -55,7 +56,7 @@ func OutputData(data interface{}, config *Config) ([]byte, error) {
 		return nil, err
 	}
 
-	parsed, err := formatter.output(data)
+	parsed, err := formatter.output(data, config)
 	if err != nil {
 		return nil, err
 	}
