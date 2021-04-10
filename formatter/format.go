@@ -13,8 +13,8 @@ type Formatter interface {
 	Format(data interface{}) ([]byte, error)
 }
 
-// Formatters Map of the different types of formatting we do here
-var Formatters = map[string]Formatter{
+// formatters Map of the different types of formatting we do here
+var formatters = map[string]Formatter{
 	"yaml":  YamlFormatter{},
 	"json":  JSONFormatter{},
 	"tsv":   TsvFormatter{},
@@ -23,10 +23,10 @@ var Formatters = map[string]Formatter{
 
 // GetFormats Return a list of formats available in Formatters
 func GetFormats() []string {
-	keys := make([]string, len(Formatters))
+	keys := make([]string, len(formatters))
 
 	i := 0
-	for k := range Formatters {
+	for k := range formatters {
 		keys[i] = k
 		i++
 	}
@@ -41,7 +41,7 @@ type Config struct {
 // OutputData Main function to return the data we will be printing to the screen
 func OutputData(data interface{}, config *Config) ([]byte, error) {
 
-	formatter, ok := Formatters[config.Format]
+	formatter, ok := formatters[config.Format]
 	if !ok {
 		err := fmt.Errorf("Invalid output format: %s", config.Format)
 		return nil, err

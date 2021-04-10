@@ -6,28 +6,6 @@ import (
 	"github.com/drewstinnett/go-output-format/formatter"
 )
 
-func TestInvalidOutputFormat(t *testing.T) {
-	t.Parallel()
-	badFormat := "ThisWillNeverBeAValidMarkdown"
-	_, got := formatter.Formatters[badFormat]
-	want := false
-	if want != got {
-		t.Fatalf(`values not equal ("%t" != "%t")`,
-			got,
-			want,
-		)
-	}
-
-	c := &formatter.Config{
-		Format: badFormat,
-	}
-
-	_, err := formatter.OutputData("foo", c)
-	if err == nil {
-		t.Fatalf("OutputData did not err on a bad format")
-	}
-}
-
 func TestGetFormats(t *testing.T) {
 	t.Parallel()
 	formats := formatter.GetFormats()
