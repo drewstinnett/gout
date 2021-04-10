@@ -11,19 +11,10 @@ import "github.com/drewstinnett/go-output-format/formatter"
 - [func GetFormats() []string](<#func-getformats>)
 - [func OutputData(data interface{}, config *Config) ([]byte, error)](<#func-outputdata>)
 - [type Config](<#type-config>)
-- [type Formatter](<#type-formatter>)
 - [type JSONFormatter](<#type-jsonformatter>)
-  - [func (j JSONFormatter) Format(data interface{}) ([]byte, error)](<#func-jsonformatter-format>)
-  - [func (j JSONFormatter) Output(data interface{}) ([]byte, error)](<#func-jsonformatter-output>)
 - [type PlainFormatter](<#type-plainformatter>)
-  - [func (j PlainFormatter) Format(data interface{}) ([]byte, error)](<#func-plainformatter-format>)
-  - [func (j PlainFormatter) Output(data interface{}) ([]byte, error)](<#func-plainformatter-output>)
 - [type TsvFormatter](<#type-tsvformatter>)
-  - [func (t TsvFormatter) Format(data interface{}) ([]byte, error)](<#func-tsvformatter-format>)
-  - [func (t TsvFormatter) Output(data interface{}) ([]byte, error)](<#func-tsvformatter-output>)
 - [type YamlFormatter](<#type-yamlformatter>)
-  - [func (y YamlFormatter) Format(data interface{}) ([]byte, error)](<#func-yamlformatter-format>)
-  - [func (y YamlFormatter) Output(data interface{}) ([]byte, error)](<#func-yamlformatter-output>)
 
 
 ## func GetFormats
@@ -32,7 +23,7 @@ import "github.com/drewstinnett/go-output-format/formatter"
 func GetFormats() []string
 ```
 
-GetFormats Return a list of formats available in Formatters
+GetFormats Return a list of formats available in formatters\. Useful if you need to check what formatters are available in a standardized way
 
 ## func OutputData
 
@@ -40,26 +31,15 @@ GetFormats Return a list of formats available in Formatters
 func OutputData(data interface{}, config *Config) ([]byte, error)
 ```
 
-OutputData Main function to return the data we will be printing to the screen
+OutputData Main function to return the data we will be printing to the screen\. This is where the magic happens\!
 
 ## type Config
 
-Config Structure to pass to formatters\.  Should include enough config to do the output
+Config Structure to pass to formatters\.  Should include enough config to do the output\. You must set the Format here to something like yaml\, json\, plain\, or any other value returned by the GetFormats function
 
 ```go
 type Config struct {
     Format string
-}
-```
-
-## type Formatter
-
-Formatter Generic formatter interface\, all interfaces should provide a structure like this
-
-```go
-type Formatter interface {
-    Output(data interface{}) ([]byte, error)
-    Format(data interface{}) ([]byte, error)
 }
 ```
 
@@ -71,22 +51,6 @@ JSONFormatter Basic struct\.
 type JSONFormatter struct{}
 ```
 
-### func \(JSONFormatter\) Format
-
-```go
-func (j JSONFormatter) Format(data interface{}) ([]byte, error)
-```
-
-Format Do the formatting here\.
-
-### func \(JSONFormatter\) Output
-
-```go
-func (j JSONFormatter) Output(data interface{}) ([]byte, error)
-```
-
-Output Capture output of JSON format
-
 ## type PlainFormatter
 
 PlainFormatter Just output in raw go format
@@ -94,22 +58,6 @@ PlainFormatter Just output in raw go format
 ```go
 type PlainFormatter struct{}
 ```
-
-### func \(PlainFormatter\) Format
-
-```go
-func (j PlainFormatter) Format(data interface{}) ([]byte, error)
-```
-
-Format Do the actual formatting here
-
-### func \(PlainFormatter\) Output
-
-```go
-func (j PlainFormatter) Output(data interface{}) ([]byte, error)
-```
-
-Output Capture the output
 
 ## type TsvFormatter
 
@@ -119,22 +67,6 @@ TsvFormatter Tab Seperatted Value output\.
 type TsvFormatter struct{}
 ```
 
-### func \(TsvFormatter\) Format
-
-```go
-func (t TsvFormatter) Format(data interface{}) ([]byte, error)
-```
-
-Format How do we actually format YAML?
-
-### func \(TsvFormatter\) Output
-
-```go
-func (t TsvFormatter) Output(data interface{}) ([]byte, error)
-```
-
-Output Do the output return string here
-
 ## type YamlFormatter
 
 YamlFormatter Basic YAML formatter struc
@@ -142,22 +74,6 @@ YamlFormatter Basic YAML formatter struc
 ```go
 type YamlFormatter struct{}
 ```
-
-### func \(YamlFormatter\) Format
-
-```go
-func (y YamlFormatter) Format(data interface{}) ([]byte, error)
-```
-
-Format How do we actually format YAML?
-
-### func \(YamlFormatter\) Output
-
-```go
-func (y YamlFormatter) Output(data interface{}) ([]byte, error)
-```
-
-Output Do the output return string here
 
 
 
