@@ -7,13 +7,10 @@ Generically format output for CLI apps, inspired by Hashicorp Vaults CLI
 options.
 
 When using CLI based tools, it's often useful to output the data in different
-formats. I tend to use the following:
+formats. Need to parse some output with `jq`?  JSON is your format. Want to put
+it out in an easy to read yet still standardized format?  YAML is for you!
 
-* YAML: Great for human readability, but still in a standardized format
-* JSON: Super ugly to read, but awesome when combined with tooling like `jq`
-* TSV: Great for just simple quick and easy grep/awk/sed/etc
-
-This tool is intended to provide all that in a single reusable package
+This tool is intended to provide all that in a single reusable package.
 
 ## Usage
 
@@ -52,3 +49,24 @@ func main() {
 ```
 
 See [examples](examples/) for more example usage
+
+## Formatter details
+
+### YAML
+
+Uses the standard `gopkg.in/yaml.v2` library.
+
+### JSON
+
+Uses the standard `encoding/json` library.
+
+### Plain
+
+This is just vanilla old Golang output, using the `%+v` format.
+
+### TSV (Tab Separated Values)
+
+Here be dragons, this is one I wrote. Intention here is to have a simple way to
+print out a data structure in a way that grep and the like can parse it. It's a
+little junky right now, but give it time 😁
+
