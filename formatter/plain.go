@@ -15,9 +15,6 @@ func (p plainFormatter) format(data interface{}, config *Config) ([]byte, error)
 
 // Output Capture the output
 func (p plainFormatter) output(data interface{}, config *Config) ([]byte, error) {
-	b, err := p.format(data, config)
-	if err != nil {
-		return nil, err
-	}
+	b, _ := p.format(data, config)
 	return b, nil
 }
