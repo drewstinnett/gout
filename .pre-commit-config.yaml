@@ -4,3 +4,4 @@ repos:
     rev: v0.3.5
     hooks:
       - id: golangci-lint
+      - id: go-unit-tests
