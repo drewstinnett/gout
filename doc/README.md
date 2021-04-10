@@ -8,7 +8,6 @@ import "github.com/drewstinnett/go-output-format/formatter"
 
 ## Index
 
-- [Variables](<#variables>)
 - [func GetFormats() []string](<#func-getformats>)
 - [func OutputData(data interface{}, config *Config) ([]byte, error)](<#func-outputdata>)
 - [type Config](<#type-config>)
@@ -26,19 +25,6 @@ import "github.com/drewstinnett/go-output-format/formatter"
   - [func (y YamlFormatter) Format(data interface{}) ([]byte, error)](<#func-yamlformatter-format>)
   - [func (y YamlFormatter) Output(data interface{}) ([]byte, error)](<#func-yamlformatter-output>)
 
-
-## Variables
-
-Formatters Map of the different types of formatting we do here
-
-```go
-var Formatters = map[string]Formatter{
-    "yaml":  YamlFormatter{},
-    "json":  JSONFormatter{},
-    "tsv":   TsvFormatter{},
-    "plain": PlainFormatter{},
-}
-```
 
 ## func GetFormats
 
