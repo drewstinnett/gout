@@ -1,0 +1,6 @@
+---
+version: '3'
+tasks:
+  doc:
+    cmds:
+      - gomarkdoc $(go list ./... | grep -v example) > doc/README.md
