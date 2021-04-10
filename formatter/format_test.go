@@ -14,6 +14,15 @@ func TestInvalidOutputFormat(t *testing.T) {
 			want,
 		)
 	}
+
+	c := &Config{
+		Format: badFormat,
+	}
+
+	_, err := OutputData("foo", c)
+	if err == nil {
+		t.Fatalf("OutputData did not err on a bad format")
+	}
 }
 
 func TestGetFormats(t *testing.T) {
