@@ -11,10 +11,6 @@ import "github.com/drewstinnett/go-output-format/formatter"
 - [func GetFormats() []string](<#func-getformats>)
 - [func OutputData(data interface{}, config *Config) ([]byte, error)](<#func-outputdata>)
 - [type Config](<#type-config>)
-- [type JSONFormatter](<#type-jsonformatter>)
-- [type PlainFormatter](<#type-plainformatter>)
-- [type TsvFormatter](<#type-tsvformatter>)
-- [type YamlFormatter](<#type-yamlformatter>)
 
 
 ## func GetFormats
@@ -41,38 +37,6 @@ Config Structure to pass to formatters\.  Should include enough config to do the
 type Config struct {
     Format string
 }
-```
-
-## type JSONFormatter
-
-JSONFormatter Basic struct\.
-
-```go
-type JSONFormatter struct{}
-```
-
-## type PlainFormatter
-
-PlainFormatter Just output in raw go format
-
-```go
-type PlainFormatter struct{}
-```
-
-## type TsvFormatter
-
-TsvFormatter Tab Seperatted Value output\.
-
-```go
-type TsvFormatter struct{}
-```
-
-## type YamlFormatter
-
-YamlFormatter Basic YAML formatter struc
-
-```go
-type YamlFormatter struct{}
 ```
 
 

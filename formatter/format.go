@@ -19,10 +19,10 @@ type formatter interface {
 // formatters Map of the different types of formatting we do here. The
 // formatter must be registered in this map to be available
 var formatters = map[string]formatter{
-	"yaml":  YamlFormatter{},
-	"json":  JSONFormatter{},
-	"tsv":   TsvFormatter{},
-	"plain": PlainFormatter{},
+	"yaml":  yamlFormatter{},
+	"json":  jsonFormatter{},
+	"tsv":   tsvFormatter{},
+	"plain": plainFormatter{},
 }
 
 // GetFormats Return a list of formats available in formatters. Useful if you
