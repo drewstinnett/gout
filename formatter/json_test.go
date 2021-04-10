@@ -1,6 +1,10 @@
-package formatter
+package formatter_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/drewstinnett/go-output-format/formatter"
+)
 
 func TestJSONFormatStruct(t *testing.T) {
 	movie := struct {
@@ -10,10 +14,10 @@ func TestJSONFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &Config{
+	c := &formatter.Config{
 		Format: "json",
 	}
-	out, _ := OutputData(movie, c)
+	out, _ := formatter.OutputData(movie, c)
 	got := string(out)
 
 	want := `{
@@ -42,10 +46,10 @@ func TestJsonFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &Config{
+	c := &formatter.Config{
 		Format: "json",
 	}
-	out, _ := OutputData(movies, c)
+	out, _ := formatter.OutputData(movies, c)
 	got := string(out)
 
 	want := `[

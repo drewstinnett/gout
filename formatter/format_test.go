@@ -1,12 +1,14 @@
-package formatter
+package formatter_test
 
 import (
 	"testing"
+
+	"github.com/drewstinnett/go-output-format/formatter"
 )
 
 func TestInvalidOutputFormat(t *testing.T) {
 	badFormat := "ThisWillNeverBeAValidMarkdown"
-	_, got := Formatters[badFormat]
+	_, got := formatter.Formatters[badFormat]
 	want := false
 	if want != got {
 		t.Fatalf(`values not equal ("%t" != "%t")`,
@@ -15,18 +17,18 @@ func TestInvalidOutputFormat(t *testing.T) {
 		)
 	}
 
-	c := &Config{
+	c := &formatter.Config{
 		Format: badFormat,
 	}
 
-	_, err := OutputData("foo", c)
+	_, err := formatter.OutputData("foo", c)
 	if err == nil {
 		t.Fatalf("OutputData did not err on a bad format")
 	}
 }
 
 func TestGetFormats(t *testing.T) {
-	formats := GetFormats()
+	formats := formatter.GetFormats()
 	if !stringInSlice("json", formats) {
 		t.Fatalf("GetFormats did not return json")
 	}

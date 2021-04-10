@@ -1,6 +1,10 @@
-package formatter
+package formatter_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/drewstinnett/go-output-format/formatter"
+)
 
 func TestPlainFormatStruct(t *testing.T) {
 	movie := struct {
@@ -10,10 +14,10 @@ func TestPlainFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &Config{
+	c := &formatter.Config{
 		Format: "plain",
 	}
-	out, _ := OutputData(movie, c)
+	out, _ := formatter.OutputData(movie, c)
 	got := string(out)
 
 	want := "{Title:Halloween Year:1978}"
@@ -39,10 +43,10 @@ func TestPlainFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &Config{
+	c := &formatter.Config{
 		Format: "plain",
 	}
-	out, _ := OutputData(movies, c)
+	out, _ := formatter.OutputData(movies, c)
 	got := string(out)
 
 	want := "[{Title:Halloween Year:1978} {Title:Phantasm Year:1979}]"

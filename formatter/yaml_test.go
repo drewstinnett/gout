@@ -1,6 +1,10 @@
-package formatter
+package formatter_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/drewstinnett/go-output-format/formatter"
+)
 
 func TestYamlFormatStruct(t *testing.T) {
 	//movie := &Movie{Title: "Halloween", Year: 1978}
@@ -11,10 +15,10 @@ func TestYamlFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &Config{
+	c := &formatter.Config{
 		Format: "yaml",
 	}
-	out, _ := OutputData(movie, c)
+	out, _ := formatter.OutputData(movie, c)
 	got := string(out)
 
 	want := `title: Halloween
@@ -42,10 +46,10 @@ func TestYamlFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &Config{
+	c := &formatter.Config{
 		Format: "yaml",
 	}
-	out, _ := OutputData(movies, c)
+	out, _ := formatter.OutputData(movies, c)
 	got := string(out)
 
 	want := `- title: Halloween

@@ -1,8 +1,10 @@
-package formatter
+package formatter_test
 
 import (
 	"strings"
 	"testing"
+
+	"github.com/drewstinnett/go-output-format/formatter"
 )
 
 func TestTSVFormatStruct(t *testing.T) {
@@ -14,10 +16,10 @@ func TestTSVFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &Config{
+	c := &formatter.Config{
 		Format: "tsv",
 	}
-	out, _ := OutputData(&movie, c)
+	out, _ := formatter.OutputData(&movie, c)
 	got := strings.TrimSpace(string(out))
 
 	want := "Halloween\t1978"
@@ -43,10 +45,10 @@ func TestTSVFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &Config{
+	c := &formatter.Config{
 		Format: "tsv",
 	}
-	out, _ := OutputData(&movies, c)
+	out, _ := formatter.OutputData(&movies, c)
 	got := strings.Replace(strings.TrimSpace(string(out)), "\t", " ", -1)
 
 	if !strings.Contains(got, "Halloween 1978") {
