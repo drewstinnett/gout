@@ -14,3 +14,6 @@ tasks:
   test:
     cmds:
       - go test $(go list ./... | grep -v example)
+  cover:
+    cmds:
+      - go test -coverprofile=/tmp/gocover $(go list ./... | grep -v example) && go tool cover -html=/tmp/gocover

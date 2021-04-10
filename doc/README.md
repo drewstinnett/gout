@@ -35,7 +35,8 @@ Config Structure to pass to formatters\.  Should include enough config to do the
 
 ```go
 type Config struct {
-    Format string
+    Format      string
+    LimitFields []string
 }
 ```
 
