@@ -56,6 +56,9 @@ func OutputData(data interface{}, config *Config) ([]byte, error) {
 		return nil, err
 	}
 
-	parsed, _ := formatter.output(data, config)
+	parsed, err := formatter.output(data, config)
+	if err != nil {
+		return nil, err
+	}
 	return parsed, nil
 }

@@ -1,11 +1,62 @@
 package formatter_test
 
 import (
+	"errors"
 	"strings"
 	"testing"
 
 	"github.com/drewstinnett/go-output-format/formatter"
 )
+
+func TestTSVInvalidDataType(t *testing.T) {
+	c := &formatter.Config{
+		Format: "tsv",
+	}
+	_, err := formatter.OutputData(func() {}, c)
+	if err == nil {
+		t.Fatalf(`Did not return an error on bad data input`)
+	}
+}
+
+func TestTSVInvalidDataStruct(t *testing.T) {
+	c := &formatter.Config{
+		Format: "tsv",
+	}
+	movie := struct {
+		Title fakeValue
+		Year  int
+	}{
+		fakeValue{errors.New("fail_the_movie")},
+		1984,
+	}
+	_, err := formatter.OutputData(movie, c)
+	if err == nil {
+		t.Fatalf("Did not return on bad data struct")
+	}
+}
+
+func TestTSVInvalidDataSlice(t *testing.T) {
+	c := &formatter.Config{
+		Format: "tsv",
+	}
+	movies := []struct {
+		Title fakeValue
+		Year  int
+	}{
+		{
+			fakeValue{errors.New("fail_the_movie")},
+			1984,
+		},
+		{
+			fakeValue{errors.New("fail_the_movie_again")},
+			1985,
+		},
+	}
+	_, err := formatter.OutputData(movies, c)
+	if err == nil {
+		t.Fatalf("Did not return on bad data slice")
+	}
+}
 
 func TestTSVField(t *testing.T) {
 	movie := struct {
@@ -30,6 +81,7 @@ func TestTSVField(t *testing.T) {
 		)
 	}
 }
+
 func TestTSVFormatStructPtr(t *testing.T) {
 	t.Parallel()
 	movie := struct {

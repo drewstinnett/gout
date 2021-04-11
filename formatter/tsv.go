@@ -23,10 +23,10 @@ func (t tsvFormatter) format(data interface{}, config *Config) ([]byte, error) {
 		objType = "struct"
 	} else if baseObjType == reflect.Slice {
 		objType = "slice"
-	} else {
+	} else if baseObjType == reflect.Ptr {
 		objType = reflect.ValueOf(data).Elem().Kind().String()
 	}
-	log.Println(objType)
+	log.Println("OBJ Type is: ", objType)
 	switch objType {
 	case "struct":
 		jsonMap := make(map[string]interface{})
@@ -41,7 +41,6 @@ func (t tsvFormatter) format(data interface{}, config *Config) ([]byte, error) {
 			return nil, err
 		}
 	default:
-		log.Println("ERR: ", objType)
 		return nil, fmt.Errorf("Unknown type of data for tsv: %s", objType)
 	}
 	returnString := ""
