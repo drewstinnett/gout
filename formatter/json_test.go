@@ -1,6 +1,7 @@
 package formatter_test
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/drewstinnett/go-output-format/formatter"
@@ -69,5 +70,22 @@ func TestJsonFormatStructList(t *testing.T) {
 			got,
 			want,
 		)
+	}
+}
+
+func TestJSONInvalidDataStruct(t *testing.T) {
+	c := &formatter.Config{
+		Format: "json",
+	}
+	movie := struct {
+		Title fakeValue
+		Year  int
+	}{
+		fakeValue{errors.New("fail_the_movie")},
+		1984,
+	}
+	_, err := formatter.OutputData(movie, c)
+	if err == nil {
+		t.Fatalf("Did not return on bad JSON data struct")
 	}
 }

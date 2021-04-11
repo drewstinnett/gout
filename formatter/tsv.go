@@ -3,7 +3,6 @@ package formatter
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"reflect"
 	"sort"
 
@@ -26,7 +25,6 @@ func (t tsvFormatter) format(data interface{}, config *Config) ([]byte, error) {
 	} else if baseObjType == reflect.Ptr {
 		objType = reflect.ValueOf(data).Elem().Kind().String()
 	}
-	log.Println("OBJ Type is: ", objType)
 	switch objType {
 	case "struct":
 		jsonMap := make(map[string]interface{})
