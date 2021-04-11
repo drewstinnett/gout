@@ -17,15 +17,25 @@ type tsvFormatter struct{}
 func (t tsvFormatter) format(data interface{}, config *Config) ([]byte, error) {
 	j, _ := json.Marshal(data)
 	var jsonSlice []map[string]interface{}
-	switch objType := reflect.ValueOf(data).Elem().Kind(); objType {
-	case reflect.Struct:
+	baseObjType := reflect.ValueOf(data).Kind()
+	var objType string
+	if baseObjType == reflect.Struct {
+		objType = "struct"
+	} else if baseObjType == reflect.Slice {
+		objType = "slice"
+	} else {
+		objType = reflect.ValueOf(data).Elem().Kind().String()
+	}
+	log.Println(objType)
+	switch objType {
+	case "struct":
 		jsonMap := make(map[string]interface{})
 		err := json.Unmarshal(j, &jsonMap)
 		if err != nil {
 			return nil, err
 		}
 		jsonSlice = append(jsonSlice, jsonMap)
-	case reflect.Slice:
+	case "slice":
 		err := json.Unmarshal(j, &jsonSlice)
 		if err != nil {
 			return nil, err

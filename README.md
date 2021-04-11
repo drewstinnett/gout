@@ -68,6 +68,4 @@ This is just vanilla old Golang output, using the `%+v` format.
 ### TSV (Tab Separated Values)
 
 Here be dragons, this is one I wrote. Intention here is to have a simple way to
-print out a data structure in a way that grep and the like can parse it. It's a
-little junky right now, but give it time 😁
-
+print out a data structure in a way that grep and the like can parse it.
