@@ -4,11 +4,15 @@
 
 # go-output-format
 
-Generically format output for CLI apps, inspired by Hashicorp Vaults CLI
-options.
+Helper utility to output data structures in to standardized formats, much like
+what is built in to [vault](https://www.vaultproject.io/),
+[az](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) and
+[kubectl](https://kubernetes.io/docs/tasks/tools/)
 
-When using CLI based tools, it's often useful to output the data in different
-formats. Need to parse some output with `jq`?  JSON is your format. Want to put
+I really like how these apps provide for flexible output, but wanted a way to
+do it without needing to re-write or copy it for every new tool.
+
+Need to parse some output with `jq`?  JSON is your format. Want to put
 it out in an easy to read yet still standardized format?  YAML is for you!
 
 This tool is intended to provide all that in a single reusable package.
