@@ -1,12 +1,8 @@
 package formatter
 
 import (
-	"encoding/json"
 	"fmt"
-	"reflect"
 	"sort"
-
-	"github.com/drewstinnett/go-output-format/helpers"
 )
 
 // TsvFormatter Tab Seperatted Value output.
@@ -14,32 +10,9 @@ type tsvFormatter struct{}
 
 // Format How do we actually format YAML?
 func (t tsvFormatter) format(data interface{}, config *Config) ([]byte, error) {
-	j, _ := json.Marshal(data)
-	var jsonSlice []map[string]interface{}
-	baseObjType := reflect.ValueOf(data).Kind()
-	var objType string
-	if baseObjType == reflect.Struct {
-		objType = "struct"
-	} else if baseObjType == reflect.Slice {
-		objType = "slice"
-	} else if baseObjType == reflect.Ptr {
-		objType = reflect.ValueOf(data).Elem().Kind().String()
-	}
-	switch objType {
-	case "struct":
-		jsonMap := make(map[string]interface{})
-		err := json.Unmarshal(j, &jsonMap)
-		if err != nil {
-			return nil, err
-		}
-		jsonSlice = append(jsonSlice, jsonMap)
-	case "slice":
-		err := json.Unmarshal(j, &jsonSlice)
-		if err != nil {
-			return nil, err
-		}
-	default:
-		return nil, fmt.Errorf("Unknown type of data for tsv: %s", objType)
+	jsonSlice, err := GenericUnmarshal(data)
+	if err != nil {
+		return nil, err
 	}
 	returnString := ""
 
@@ -52,7 +25,7 @@ func (t tsvFormatter) format(data interface{}, config *Config) ([]byte, error) {
 		for _, k := range keys {
 			if len(config.LimitFields) == 0 {
 				returnString += fmt.Sprint(item[k], "\t")
-			} else if helpers.StringInSlice(k, config.LimitFields) {
+			} else if StringInSlice(k, config.LimitFields) {
 				returnString += fmt.Sprint(item[k], "\t")
 			}
 		}

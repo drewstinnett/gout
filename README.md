@@ -65,6 +65,13 @@ Uses the standard `encoding/json` library.
 
 This is just vanilla old Golang output, using the `%+v` format.
 
+### GoTemplate
+
+Use this format to parse the data in to a golang template. Useful for spitting
+data out in a more arbitrary format. This uses the `text/template` package to
+parse each item in the return slice. See [the example
+here](examples/templated-output/main.go) for full details.
+
 ### TSV (Tab Separated Values)
 
 Here be dragons, this is one I wrote. Intention here is to have a simple way to

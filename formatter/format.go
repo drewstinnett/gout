@@ -19,10 +19,11 @@ type formatter interface {
 // formatters Map of the different types of formatting we do here. The
 // formatter must be registered in this map to be available
 var formatters = map[string]formatter{
-	"yaml":  yamlFormatter{},
-	"json":  jsonFormatter{},
-	"tsv":   tsvFormatter{},
-	"plain": plainFormatter{},
+	"yaml":       yamlFormatter{},
+	"json":       jsonFormatter{},
+	"tsv":        tsvFormatter{},
+	"plain":      plainFormatter{},
+	"gotemplate": gotemplateFormatter{},
 }
 
 // GetFormats Return a list of formats available in formatters. Useful if you
@@ -44,6 +45,7 @@ func GetFormats() []string {
 type Config struct {
 	Format      string
 	LimitFields []string
+	Template    string
 }
 
 // OutputData Main function to return the data we will be printing to the
