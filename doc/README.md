@@ -8,10 +8,20 @@ import "github.com/drewstinnett/go-output-format/formatter"
 
 ## Index
 
+- [func GenericUnmarshal(data interface{}) ([]map[string]interface{}, error)](<#func-genericunmarshal>)
 - [func GetFormats() []string](<#func-getformats>)
 - [func OutputData(data interface{}, config *Config) ([]byte, error)](<#func-outputdata>)
+- [func StringInSlice(a string, list []string) bool](<#func-stringinslice>)
 - [type Config](<#type-config>)
 
+
+## func GenericUnmarshal
+
+```go
+func GenericUnmarshal(data interface{}) ([]map[string]interface{}, error)
+```
+
+GenericUnmarshal Given an arbitrary piece of data\, return a slice of json data
 
 ## func GetFormats
 
@@ -29,6 +39,14 @@ func OutputData(data interface{}, config *Config) ([]byte, error)
 
 OutputData Main function to return the data we will be printing to the screen\. This is where the magic happens\!
 
+## func StringInSlice
+
+```go
+func StringInSlice(a string, list []string) bool
+```
+
+StringInSlice Check if a slice for a string
+
 ## type Config
 
 Config Structure to pass to formatters\.  Should include enough config to do the output\. You must set the Format here to something like yaml\, json\, plain\, or any other value returned by the GetFormats function
@@ -37,27 +55,9 @@ Config Structure to pass to formatters\.  Should include enough config to do the
 type Config struct {
     Format      string
     LimitFields []string
+    Template    string
 }
 ```
-
-# helpers
-
-```go
-import "github.com/drewstinnett/go-output-format/helpers"
-```
-
-## Index
-
-- [func StringInSlice(a string, list []string) bool](<#func-stringinslice>)
-
-
-## func StringInSlice
-
-```go
-func StringInSlice(a string, list []string) bool
-```
-
-StringInSlice Check if a slice for a string
 
 
 
