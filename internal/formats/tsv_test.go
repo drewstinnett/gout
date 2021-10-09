@@ -1,15 +1,16 @@
-package formatter_test
+package formats_test
 
 import (
 	"errors"
 	"strings"
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/formatter"
+	"github.com/drewstinnett/go-output-format/pkg/config"
+	"github.com/drewstinnett/go-output-format/pkg/formatter"
 )
 
 func TestTSVInvalidDataType(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "tsv",
 	}
 	_, err := formatter.OutputData(func() {}, c)
@@ -19,7 +20,7 @@ func TestTSVInvalidDataType(t *testing.T) {
 }
 
 func TestTSVInvalidDataStruct(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "tsv",
 	}
 	movie := struct {
@@ -36,7 +37,7 @@ func TestTSVInvalidDataStruct(t *testing.T) {
 }
 
 func TestTSVInvalidDataSlice(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "tsv",
 	}
 	movies := []struct {
@@ -66,7 +67,7 @@ func TestTSVField(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:      "tsv",
 		LimitFields: []string{"Title"},
 	}
@@ -91,7 +92,7 @@ func TestTSVFormatStructPtr(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "tsv",
 	}
 	out, _ := formatter.OutputData(&movie, c)
@@ -105,6 +106,7 @@ func TestTSVFormatStructPtr(t *testing.T) {
 		)
 	}
 }
+
 func TestTSVFormatStruct(t *testing.T) {
 	t.Parallel()
 	movie := struct {
@@ -114,7 +116,7 @@ func TestTSVFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "tsv",
 	}
 	out, _ := formatter.OutputData(movie, c)
@@ -144,7 +146,7 @@ func TestTSVFormatStructListPtr(t *testing.T) {
 			1979,
 		},
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "tsv",
 	}
 	out, _ := formatter.OutputData(&movies, c)
@@ -173,7 +175,7 @@ func TestTSVFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "tsv",
 	}
 	out, _ := formatter.OutputData(movies, c)

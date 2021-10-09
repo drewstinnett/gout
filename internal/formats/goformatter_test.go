@@ -1,15 +1,16 @@
-package formatter_test
+package formats_test
 
 import (
 	"errors"
 	"strings"
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/formatter"
+	"github.com/drewstinnett/go-output-format/pkg/config"
+	"github.com/drewstinnett/go-output-format/pkg/formatter"
 )
 
 func TestGoTemplateInvalidDataType(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: "{{ .Title }}",
 	}
@@ -20,7 +21,7 @@ func TestGoTemplateInvalidDataType(t *testing.T) {
 }
 
 func TestGoTemplateMissingTemplate(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "gotemplate",
 	}
 	_, err := formatter.OutputData("foo", c)
@@ -30,7 +31,7 @@ func TestGoTemplateMissingTemplate(t *testing.T) {
 }
 
 func TestGoTemplateInvalidTemplate(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: "{{ .Name ",
 	}
@@ -41,7 +42,7 @@ func TestGoTemplateInvalidTemplate(t *testing.T) {
 }
 
 func TestGoTemplateInvalidDataStruct(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: "{{ .Title }}",
 	}
@@ -67,7 +68,7 @@ func TestGoTemplateFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: "{{ .Title }}",
 	}
@@ -98,7 +99,7 @@ func TestGoTemplateFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: "{{ .Title }}\n",
 	}

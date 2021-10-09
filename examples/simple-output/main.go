@@ -6,7 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/drewstinnett/go-output-format/formatter"
+	"github.com/drewstinnett/go-output-format/pkg/config"
+	"github.com/drewstinnett/go-output-format/pkg/formatter"
 )
 
 type sample struct {
@@ -24,7 +25,7 @@ func main() {
 	if len(os.Args) != 2 {
 		log.Fatalf("Usage: %s %s", os.Args[0], formatArg)
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: os.Args[1],
 	}
 	// Single Entry
@@ -37,7 +38,7 @@ func main() {
 	}
 
 	log.Println("Printing multiple entry")
-	var people = &sampleList{
+	people := &sampleList{
 		sample{FirstName: "Jason", LastName: "Vorhees", Age: 11},
 		sample{FirstName: "Freddy", LastName: "Krueger", Age: 35},
 		sample{FirstName: "Michael", LastName: "Myers", Age: 13},
@@ -47,5 +48,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }

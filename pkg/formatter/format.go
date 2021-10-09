@@ -2,6 +2,9 @@ package formatter
 
 import (
 	"fmt"
+
+	"github.com/drewstinnett/go-output-format/internal/formats"
+	"github.com/drewstinnett/go-output-format/pkg/config"
 )
 
 // Starting with code similar to:
@@ -12,18 +15,18 @@ import (
 // function. Output will do the actual data output, running Format first, to do
 // the actual data formatting
 type formatter interface {
-	output(data interface{}, config *Config) ([]byte, error)
-	format(data interface{}, config *Config) ([]byte, error)
+	Output(data interface{}, config *config.Config) ([]byte, error)
+	Format(data interface{}, config *config.Config) ([]byte, error)
 }
 
 // formatters Map of the different types of formatting we do here. The
 // formatter must be registered in this map to be available
 var formatters = map[string]formatter{
-	"yaml":       yamlFormatter{},
-	"json":       jsonFormatter{},
-	"tsv":        tsvFormatter{},
-	"plain":      plainFormatter{},
-	"gotemplate": gotemplateFormatter{},
+	"yaml":       formats.YAMLFormatter{},
+	"json":       formats.JSONFormatter{},
+	"tsv":        formats.TSVFormatter{},
+	"plain":      formats.PlainFormatter{},
+	"gotemplate": formats.GoTemplateFormatter{},
 }
 
 // GetFormats Return a list of formats available in formatters. Useful if you
@@ -39,26 +42,16 @@ func GetFormats() []string {
 	return keys
 }
 
-// Config Structure to pass to formatters.  Should include enough config to do
-// the output. You must set the Format here to something like yaml, json,
-// plain, or any other value returned by the GetFormats function
-type Config struct {
-	Format      string
-	LimitFields []string
-	Template    string
-}
-
 // OutputData Main function to return the data we will be printing to the
 // screen. This is where the magic happens!
-func OutputData(data interface{}, config *Config) ([]byte, error) {
-
+func OutputData(data interface{}, config *config.Config) ([]byte, error) {
 	formatter, ok := formatters[config.Format]
 	if !ok {
 		err := fmt.Errorf("Invalid output format: %s", config.Format)
 		return nil, err
 	}
 
-	parsed, err := formatter.output(data, config)
+	parsed, err := formatter.Output(data, config)
 	if err != nil {
 		return nil, err
 	}

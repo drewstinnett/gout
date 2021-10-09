@@ -1,12 +1,13 @@
-package formatter_test
+package formats_test
 
 import (
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/formatter"
+	"github.com/drewstinnett/go-output-format/pkg/config"
+	"github.com/drewstinnett/go-output-format/pkg/formatter"
 )
 
-func TestYamlFormatStruct(t *testing.T) {
+func TestPlainFormatStruct(t *testing.T) {
 	t.Parallel()
 	movie := struct {
 		Title string
@@ -15,15 +16,13 @@ func TestYamlFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &formatter.Config{
-		Format: "yaml",
+	c := &config.Config{
+		Format: "plain",
 	}
 	out, _ := formatter.OutputData(movie, c)
 	got := string(out)
 
-	want := `title: Halloween
-year: 1978
-`
+	want := "{Title:Halloween Year:1978}"
 	if got != want {
 		t.Fatalf(`values not equal ("%s" != "%s")`,
 			got,
@@ -32,7 +31,7 @@ year: 1978
 	}
 }
 
-func TestYamlFormatStructList(t *testing.T) {
+func TestPlainFormatStructList(t *testing.T) {
 	t.Parallel()
 	movies := []struct {
 		Title string
@@ -47,17 +46,13 @@ func TestYamlFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &formatter.Config{
-		Format: "yaml",
+	c := &config.Config{
+		Format: "plain",
 	}
 	out, _ := formatter.OutputData(movies, c)
 	got := string(out)
 
-	want := `- title: Halloween
-  year: 1978
-- title: Phantasm
-  year: 1979
-`
+	want := "[{Title:Halloween Year:1978} {Title:Phantasm Year:1979}]"
 	if got != want {
 		t.Fatalf(`values not equal ("%s" != "%s")`,
 			got,

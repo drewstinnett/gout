@@ -1,16 +1,16 @@
-package formatter_test
+package utils_test
 
 import (
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/formatter"
+	"github.com/drewstinnett/go-output-format/internal/utils"
 )
 
 func TestSliceContains(t *testing.T) {
 	t.Parallel()
 	s := []string{"foo", "bar", "baz"}
 
-	got := formatter.StringInSlice("bar", s)
+	got := utils.StringInSlice("bar", s)
 	if got != true {
 		t.Fatalf("Could not find 'bar' in slice")
 	}
@@ -20,7 +20,7 @@ func TestSliceNotContains(t *testing.T) {
 	t.Parallel()
 	s := []string{"foo", "bar", "baz"}
 
-	got := formatter.StringInSlice("NeverExists", s)
+	got := utils.StringInSlice("NeverExists", s)
 	if got != false {
 		t.Fatalf("Found something nit shouldn't have")
 	}

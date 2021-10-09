@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/drewstinnett/go-output-format/formatter"
+	"github.com/drewstinnett/go-output-format/pkg/config"
+	"github.com/drewstinnett/go-output-format/pkg/formatter"
 )
 
 type sample struct {
@@ -18,7 +19,7 @@ type sampleList []sample
 func main() {
 	template := "{{ .FirstName }} (Of the family: {{ .LastName }}) is {{ .Age }} years old\n"
 
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: template,
 	}
@@ -32,7 +33,7 @@ func main() {
 	}
 
 	log.Println("Printing multiple entry")
-	var people = &sampleList{
+	people := &sampleList{
 		sample{FirstName: "Jason", LastName: "Vorhees", Age: 11},
 		sample{FirstName: "Freddy", LastName: "Krueger", Age: 35},
 		sample{FirstName: "Michael", LastName: "Myers", Age: 13},
@@ -42,5 +43,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }

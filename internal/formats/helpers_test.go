@@ -1,4 +1,4 @@
-package formatter_test
+package formats_test
 
 type fakeValue struct {
 	err error
