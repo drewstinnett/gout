@@ -5,6 +5,7 @@ import (
 
 	"github.com/drewstinnett/go-output-format/pkg/config"
 	"github.com/drewstinnett/go-output-format/pkg/formatter"
+	"gotest.tools/assert"
 )
 
 func TestYamlFormatStruct(t *testing.T) {
@@ -25,12 +26,7 @@ func TestYamlFormatStruct(t *testing.T) {
 	want := `title: Halloween
 year: 1978
 `
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	assert.Equal(t, want, got)
 }
 
 func TestYamlFormatStructList(t *testing.T) {
@@ -59,10 +55,5 @@ func TestYamlFormatStructList(t *testing.T) {
 - title: Phantasm
   year: 1979
 `
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	assert.Equal(t, want, got)
 }

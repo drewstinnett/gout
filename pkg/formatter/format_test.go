@@ -3,9 +3,9 @@ package formatter_test
 import (
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/internal/utils"
 	"github.com/drewstinnett/go-output-format/pkg/config"
 	"github.com/drewstinnett/go-output-format/pkg/formatter"
+	"github.com/stretchr/testify/require"
 )
 
 func TestBadFormat(t *testing.T) {
@@ -13,21 +13,11 @@ func TestBadFormat(t *testing.T) {
 		Format: "NeverExist",
 	}
 	_, err := formatter.OutputData(nil, c)
-	if err == nil {
-		t.Fatalf("Using a bad Format did not cause an error")
-	}
+	require.Error(t, err)
 }
 
 func TestGetFormats(t *testing.T) {
 	t.Parallel()
 	formats := formatter.GetFormats()
-	if !utils.StringInSlice("json", formats) {
-		t.Fatalf("GetFormats did not return json")
-	}
-	if !utils.StringInSlice("yaml", formats) {
-		t.Fatalf("GetFormats did not return yaml")
-	}
-	if !utils.StringInSlice("tsv", formats) {
-		t.Fatalf("GetFormats did not return tsv")
-	}
+	require.Subset(t, formats, []string{"json", "yaml", "tsv"})
 }

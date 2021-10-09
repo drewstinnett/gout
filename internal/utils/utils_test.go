@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/drewstinnett/go-output-format/internal/utils"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSliceContains(t *testing.T) {
@@ -11,9 +12,7 @@ func TestSliceContains(t *testing.T) {
 	s := []string{"foo", "bar", "baz"}
 
 	got := utils.StringInSlice("bar", s)
-	if got != true {
-		t.Fatalf("Could not find 'bar' in slice")
-	}
+	require.True(t, got)
 }
 
 func TestSliceNotContains(t *testing.T) {
@@ -21,7 +20,5 @@ func TestSliceNotContains(t *testing.T) {
 	s := []string{"foo", "bar", "baz"}
 
 	got := utils.StringInSlice("NeverExists", s)
-	if got != false {
-		t.Fatalf("Found something nit shouldn't have")
-	}
+	require.False(t, got)
 }

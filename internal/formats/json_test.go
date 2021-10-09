@@ -6,6 +6,7 @@ import (
 
 	"github.com/drewstinnett/go-output-format/pkg/config"
 	"github.com/drewstinnett/go-output-format/pkg/formatter"
+	"github.com/stretchr/testify/require"
 )
 
 func TestJSONFormatStruct(t *testing.T) {
@@ -27,12 +28,7 @@ func TestJSONFormatStruct(t *testing.T) {
   "Title": "Halloween",
   "Year": 1978
 }`
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	require.Equal(t, want, got)
 }
 
 func TestJsonFormatStructList(t *testing.T) {
@@ -66,12 +62,7 @@ func TestJsonFormatStructList(t *testing.T) {
     "Year": 1979
   }
 ]`
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	require.Equal(t, want, got)
 }
 
 func TestJSONInvalidDataStruct(t *testing.T) {
@@ -86,7 +77,5 @@ func TestJSONInvalidDataStruct(t *testing.T) {
 		1984,
 	}
 	_, err := formatter.OutputData(movie, c)
-	if err == nil {
-		t.Fatalf("Did not return on bad JSON data struct")
-	}
+	require.Error(t, err)
 }
