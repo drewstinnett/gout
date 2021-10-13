@@ -10,10 +10,10 @@ import (
 )
 
 // TsvFormatter Tab Seperatted Value output.
-type Formatter struct{}
+type plug struct{}
 
 // Format How do we actually format YAML?
-func (t *Formatter) Format(data interface{}, config *config.Config) ([]byte, error) {
+func (p *plug) Format(data interface{}, config *config.Config) ([]byte, error) {
 	jsonSlice, err := utils.GenericUnmarshal(data)
 	if err != nil {
 		return nil, err
@@ -40,13 +40,13 @@ func (t *Formatter) Format(data interface{}, config *config.Config) ([]byte, err
 }
 
 // Output Do the output return string here
-func (t *Formatter) Output(data interface{}, config *config.Config) ([]byte, error) {
-	b, nil := t.Format(data, config)
+func (p *plug) Output(data interface{}, config *config.Config) ([]byte, error) {
+	b, nil := p.Format(data, config)
 	return b, nil
 }
 
 func init() {
 	formatter.Add("tsv", func() formatter.Formatter {
-		return &Formatter{}
+		return &plug{}
 	})
 }

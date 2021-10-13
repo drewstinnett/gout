@@ -8,23 +8,23 @@ import (
 )
 
 // PlainFormatter Just output in raw go format
-type Formatter struct{}
+type plug struct{}
 
 // Format Do the actual formatting here
-func (p Formatter) Format(data interface{}, config *config.Config) ([]byte, error) {
+func (p *plug) Format(data interface{}, config *config.Config) ([]byte, error) {
 	// b := []byte(fmt.Sprintf("%+v", data.(interface{})))
 	b := []byte(fmt.Sprintf("%+v", data))
 	return b, nil
 }
 
 // Output Capture the output
-func (p Formatter) Output(data interface{}, config *config.Config) ([]byte, error) {
+func (p *plug) Output(data interface{}, config *config.Config) ([]byte, error) {
 	b, _ := p.Format(data, config)
 	return b, nil
 }
 
 func init() {
 	formatter.Add("plain", func() formatter.Formatter {
-		return &Formatter{}
+		return &plug{}
 	})
 }

@@ -8,23 +8,23 @@ import (
 )
 
 // YamlFormatter Basic YAML formatter struc
-type YAML struct{}
+type plug struct{}
 
 // Format How do we actually format YAML?
-func (y *YAML) Format(data interface{}, config *config.Config) ([]byte, error) {
+func (p *plug) Format(data interface{}, config *config.Config) ([]byte, error) {
 	log.Debugf("Called with config: %v", config)
 	return yaml.Marshal(data)
 }
 
 // Output Do the output return string here
-func (y *YAML) Output(data interface{}, config *config.Config) ([]byte, error) {
+func (p *plug) Output(data interface{}, config *config.Config) ([]byte, error) {
 	log.Debugf("Called with config: %v", config)
-	b, _ := y.Format(data, config)
+	b, _ := p.Format(data, config)
 	return b, nil
 }
 
 func init() {
 	formatter.Add("yaml", func() formatter.Formatter {
-		return &YAML{}
+		return &plug{}
 	})
 }

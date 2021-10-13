@@ -8,18 +8,18 @@ import (
 )
 
 // JSONFormatter Basic struct.
-type Formatter struct{}
+type plug struct{}
 
 // Format Do the formatting here.
-func (j *Formatter) Format(data interface{}, config *config.Config) ([]byte, error) {
+func (p *plug) Format(data interface{}, config *config.Config) ([]byte, error) {
 	d, err := json.MarshalIndent(data, "", "  ")
 
 	return d, err
 }
 
 // Output Capture output of JSON format
-func (j *Formatter) Output(data interface{}, config *config.Config) ([]byte, error) {
-	b, err := j.Format(data, config)
+func (p *plug) Output(data interface{}, config *config.Config) ([]byte, error) {
+	b, err := p.Format(data, config)
 	if err != nil {
 		return nil, err
 	}
@@ -28,6 +28,6 @@ func (j *Formatter) Output(data interface{}, config *config.Config) ([]byte, err
 
 func init() {
 	formatter.Add("json", func() formatter.Formatter {
-		return &Formatter{}
+		return &plug{}
 	})
 }
