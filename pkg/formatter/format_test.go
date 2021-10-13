@@ -1,6 +1,7 @@
 package formatter_test
 
 import (
+	"errors"
 	"testing"
 
 	_ "github.com/drewstinnett/go-output-format/internal/formats/all"
@@ -30,4 +31,26 @@ func TestOutputFormats(t *testing.T) {
 	out, err := formatter.OutputData("hi", c)
 	require.NoError(t, err)
 	require.Equal(t, "\"hi\"", string(out))
+}
+
+func TestOutputError(t *testing.T) {
+	c := &config.Config{
+		Format: "json",
+	}
+	_, err := formatter.OutputData(fakeValue{
+		errors.New("err"),
+	}, c)
+	require.Error(t, err)
+}
+
+type fakeValue struct {
+	err error
+}
+
+func (v fakeValue) MarshalJSON() ([]byte, error) {
+	if v.err != nil {
+		return nil, v.err
+	}
+
+	return []byte(`null`), v.err
 }
