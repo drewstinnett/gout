@@ -55,13 +55,6 @@ func OutputData(data interface{}, config *config.Config) ([]byte, error) {
 		return nil, err
 	}
 	formatter := Formats[config.Format]()
-	//formatter, ok := formatters[config.Format]
-	/*
-		if !ok {
-			err := fmt.Errorf("Invalid output format: %s", config.Format)
-			return nil, err
-		}
-	*/
 
 	parsed, err := formatter.Output(data, config)
 	if err != nil {

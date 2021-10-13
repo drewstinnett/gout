@@ -22,3 +22,12 @@ func TestGetFormats(t *testing.T) {
 	formats := formatter.GetFormats()
 	require.Subset(t, formats, []string{"gotemplate", "yaml"})
 }
+
+func TestOutputFormats(t *testing.T) {
+	c := &config.Config{
+		Format: "json",
+	}
+	out, err := formatter.OutputData("hi", c)
+	require.NoError(t, err)
+	require.Equal(t, "\"hi\"", string(out))
+}
