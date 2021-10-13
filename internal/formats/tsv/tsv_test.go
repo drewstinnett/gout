@@ -1,4 +1,4 @@
-package formats_test
+package tsv_test
 
 import (
 	"errors"
@@ -159,4 +159,16 @@ func TestTSVFormatStructList(t *testing.T) {
 
 	require.Contains(t, got, "Halloween 1978")
 	require.Contains(t, got, "Phantasm 1979")
+}
+
+type fakeValue struct {
+	err error
+}
+
+func (v fakeValue) MarshalJSON() ([]byte, error) {
+	if v.err != nil {
+		return nil, v.err
+	}
+
+	return []byte(`null`), v.err
 }

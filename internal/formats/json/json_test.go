@@ -1,4 +1,4 @@
-package formats_test
+package json_test
 
 import (
 	"errors"
@@ -78,4 +78,16 @@ func TestJSONInvalidDataStruct(t *testing.T) {
 	}
 	_, err := formatter.OutputData(movie, c)
 	require.Error(t, err)
+}
+
+type fakeValue struct {
+	err error
+}
+
+func (v fakeValue) MarshalJSON() ([]byte, error) {
+	if v.err != nil {
+		return nil, v.err
+	}
+
+	return []byte(`null`), v.err
 }

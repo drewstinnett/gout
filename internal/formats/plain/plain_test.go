@@ -1,14 +1,14 @@
-package formats_test
+package plain_test
 
 import (
 	"testing"
 
 	"github.com/drewstinnett/go-output-format/pkg/config"
 	"github.com/drewstinnett/go-output-format/pkg/formatter"
-	"gotest.tools/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func TestYamlFormatStruct(t *testing.T) {
+func TestPlainFormatStruct(t *testing.T) {
 	t.Parallel()
 	movie := struct {
 		Title string
@@ -18,18 +18,16 @@ func TestYamlFormatStruct(t *testing.T) {
 		1978,
 	}
 	c := &config.Config{
-		Format: "yaml",
+		Format: "plain",
 	}
 	out, _ := formatter.OutputData(movie, c)
 	got := string(out)
 
-	want := `title: Halloween
-year: 1978
-`
-	assert.Equal(t, want, got)
+	want := "{Title:Halloween Year:1978}"
+	require.Equal(t, want, got)
 }
 
-func TestYamlFormatStructList(t *testing.T) {
+func TestPlainFormatStructList(t *testing.T) {
 	t.Parallel()
 	movies := []struct {
 		Title string
@@ -45,15 +43,11 @@ func TestYamlFormatStructList(t *testing.T) {
 		},
 	}
 	c := &config.Config{
-		Format: "yaml",
+		Format: "plain",
 	}
 	out, _ := formatter.OutputData(movies, c)
 	got := string(out)
 
-	want := `- title: Halloween
-  year: 1978
-- title: Phantasm
-  year: 1979
-`
-	assert.Equal(t, want, got)
+	want := "[{Title:Halloween Year:1978} {Title:Phantasm Year:1979}]"
+	require.Equal(t, want, got)
 }

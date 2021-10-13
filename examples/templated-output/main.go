@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 
+	_ "github.com/drewstinnett/go-output-format/internal/formats/gotemplate"
 	"github.com/drewstinnett/go-output-format/pkg/config"
 	"github.com/drewstinnett/go-output-format/pkg/formatter"
 )
