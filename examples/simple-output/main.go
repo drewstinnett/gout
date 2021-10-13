@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	_ "github.com/drewstinnett/go-output-format/internal/formats/all"
 	"github.com/drewstinnett/go-output-format/pkg/config"
 	"github.com/drewstinnett/go-output-format/pkg/formatter"
 )

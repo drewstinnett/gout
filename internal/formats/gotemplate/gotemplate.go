@@ -1,4 +1,4 @@
-package formats
+package gotemplate
 
 import (
 	"bytes"
@@ -7,13 +7,14 @@ import (
 
 	"github.com/drewstinnett/go-output-format/internal/utils"
 	"github.com/drewstinnett/go-output-format/pkg/config"
+	"github.com/drewstinnett/go-output-format/pkg/formatter"
 )
 
 // GotemplateFormatter Tab Seperatted Value output.
 type GoTemplateFormatter struct{}
 
 // Format How do we actually format the data back?
-func (g GoTemplateFormatter) Format(data interface{}, config *config.Config) ([]byte, error) {
+func (g *GoTemplateFormatter) Format(data interface{}, config *config.Config) ([]byte, error) {
 	if config.Template == "" {
 		return nil, fmt.Errorf("Missing required config value of 'Template' for gotemplate")
 	}
@@ -40,7 +41,13 @@ func (g GoTemplateFormatter) Format(data interface{}, config *config.Config) ([]
 }
 
 // Output Do the output return string here
-func (g GoTemplateFormatter) Output(data interface{}, config *config.Config) ([]byte, error) {
+func (g *GoTemplateFormatter) Output(data interface{}, config *config.Config) ([]byte, error) {
 	b, nil := g.Format(data, config)
 	return b, nil
+}
+
+func init() {
+	formatter.Add("gotemplate", func() formatter.Formatter {
+		return &GoTemplateFormatter{}
+	})
 }

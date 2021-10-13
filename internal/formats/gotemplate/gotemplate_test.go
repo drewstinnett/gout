@@ -1,10 +1,11 @@
-package formats_test
+package gotemplate_test
 
 import (
 	"errors"
 	"strings"
 	"testing"
 
+	_ "github.com/drewstinnett/go-output-format/internal/formats/gotemplate"
 	"github.com/drewstinnett/go-output-format/pkg/config"
 	"github.com/drewstinnett/go-output-format/pkg/formatter"
 	"github.com/stretchr/testify/require"
@@ -96,4 +97,16 @@ func TestGoTemplateFormatStructList(t *testing.T) {
 	want := "Halloween\nPhantasm"
 
 	require.Equal(t, want, got)
+}
+
+type fakeValue struct {
+	err error
+}
+
+func (v fakeValue) MarshalJSON() ([]byte, error) {
+	if v.err != nil {
+		return nil, v.err
+	}
+
+	return []byte(`null`), v.err
 }

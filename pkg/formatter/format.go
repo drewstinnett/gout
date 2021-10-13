@@ -1,9 +1,10 @@
 package formatter
 
 import (
+	//_ "github.com/drewstinnett/go-output-format/internal/formats/yaml"
 	"fmt"
 
-	"github.com/drewstinnett/go-output-format/internal/formats"
+	"github.com/drewstinnett/go-output-format/internal/utils"
 	"github.com/drewstinnett/go-output-format/pkg/config"
 )
 
@@ -14,28 +15,31 @@ import (
 // structure like this. All formatters must implement an output and format
 // function. Output will do the actual data output, running Format first, to do
 // the actual data formatting
-type formatter interface {
-	Output(data interface{}, config *config.Config) ([]byte, error)
+type Formatter interface {
 	Format(data interface{}, config *config.Config) ([]byte, error)
+	Output(data interface{}, config *config.Config) ([]byte, error)
 }
+
+type Format interface{}
 
 // formatters Map of the different types of formatting we do here. The
 // formatter must be registered in this map to be available
-var formatters = map[string]formatter{
-	"yaml":       formats.YAMLFormatter{},
+/*
+var formatters = map[string]Formatter{
 	"json":       formats.JSONFormatter{},
 	"tsv":        formats.TSVFormatter{},
 	"plain":      formats.PlainFormatter{},
 	"gotemplate": formats.GoTemplateFormatter{},
 }
+*/
 
 // GetFormats Return a list of formats available in formatters. Useful if you
 // need to check what formatters are available in a standardized way
 func GetFormats() []string {
-	keys := make([]string, len(formatters))
+	keys := make([]string, len(Formats))
 
 	i := 0
-	for k := range formatters {
+	for k := range Formats {
 		keys[i] = k
 		i++
 	}
@@ -45,15 +49,31 @@ func GetFormats() []string {
 // OutputData Main function to return the data we will be printing to the
 // screen. This is where the magic happens!
 func OutputData(data interface{}, config *config.Config) ([]byte, error) {
-	formatter, ok := formatters[config.Format]
-	if !ok {
+	// Make sure it's a valid format
+	if !utils.StringInSlice(config.Format, GetFormats()) {
 		err := fmt.Errorf("Invalid output format: %s", config.Format)
 		return nil, err
 	}
+	formatter := Formats[config.Format]()
+	//formatter, ok := formatters[config.Format]
+	/*
+		if !ok {
+			err := fmt.Errorf("Invalid output format: %s", config.Format)
+			return nil, err
+		}
+	*/
 
 	parsed, err := formatter.Output(data, config)
 	if err != nil {
 		return nil, err
 	}
 	return parsed, nil
+}
+
+type Creator func() Formatter
+
+var Formats = map[string]Creator{}
+
+func Add(name string, creator Creator) {
+	Formats[name] = creator
 }
