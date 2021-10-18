@@ -1,26 +1,18 @@
-package formatter
+package utils
 
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"reflect"
 )
-
-// StringInSlice Check if a slice for a string
-func StringInSlice(a string, list []string) bool {
-	for _, b := range list {
-		if b == a {
-			return true
-		}
-	}
-	return false
-}
 
 // GenericUnmarshal Given an arbitrary piece of data, return a slice of json data
 func GenericUnmarshal(data interface{}) ([]map[string]interface{}, error) {
 	j, _ := json.Marshal(data)
 	var jsonSlice []map[string]interface{}
 	baseObjType := reflect.ValueOf(data).Kind()
+	log.Println(baseObjType)
 	var objType string
 	if baseObjType == reflect.Struct {
 		objType = "struct"
@@ -46,4 +38,14 @@ func GenericUnmarshal(data interface{}) ([]map[string]interface{}, error) {
 		return nil, fmt.Errorf("Unknown type of data for gotemplate: %s", objType)
 	}
 	return jsonSlice, nil
+}
+
+// StringInSlice Check if a slice for a string
+func StringInSlice(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
 }

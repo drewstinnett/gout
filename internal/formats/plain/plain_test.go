@@ -1,9 +1,11 @@
-package formatter_test
+package plain_test
 
 import (
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/formatter"
+	"github.com/drewstinnett/go-output-format/pkg/config"
+	"github.com/drewstinnett/go-output-format/pkg/formatter"
+	"github.com/stretchr/testify/require"
 )
 
 func TestPlainFormatStruct(t *testing.T) {
@@ -15,19 +17,14 @@ func TestPlainFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "plain",
 	}
 	out, _ := formatter.OutputData(movie, c)
 	got := string(out)
 
 	want := "{Title:Halloween Year:1978}"
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	require.Equal(t, want, got)
 }
 
 func TestPlainFormatStructList(t *testing.T) {
@@ -45,17 +42,12 @@ func TestPlainFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "plain",
 	}
 	out, _ := formatter.OutputData(movies, c)
 	got := string(out)
 
 	want := "[{Title:Halloween Year:1978} {Title:Phantasm Year:1979}]"
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	require.Equal(t, want, got)
 }

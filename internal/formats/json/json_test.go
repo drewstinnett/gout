@@ -1,10 +1,12 @@
-package formatter_test
+package json_test
 
 import (
 	"errors"
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/formatter"
+	"github.com/drewstinnett/go-output-format/pkg/config"
+	"github.com/drewstinnett/go-output-format/pkg/formatter"
+	"github.com/stretchr/testify/require"
 )
 
 func TestJSONFormatStruct(t *testing.T) {
@@ -16,7 +18,7 @@ func TestJSONFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "json",
 	}
 	out, _ := formatter.OutputData(movie, c)
@@ -26,12 +28,7 @@ func TestJSONFormatStruct(t *testing.T) {
   "Title": "Halloween",
   "Year": 1978
 }`
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	require.Equal(t, want, got)
 }
 
 func TestJsonFormatStructList(t *testing.T) {
@@ -49,7 +46,7 @@ func TestJsonFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "json",
 	}
 	out, _ := formatter.OutputData(movies, c)
@@ -65,16 +62,11 @@ func TestJsonFormatStructList(t *testing.T) {
     "Year": 1979
   }
 ]`
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	require.Equal(t, want, got)
 }
 
 func TestJSONInvalidDataStruct(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "json",
 	}
 	movie := struct {
@@ -85,7 +77,17 @@ func TestJSONInvalidDataStruct(t *testing.T) {
 		1984,
 	}
 	_, err := formatter.OutputData(movie, c)
-	if err == nil {
-		t.Fatalf("Did not return on bad JSON data struct")
+	require.Error(t, err)
+}
+
+type fakeValue struct {
+	err error
+}
+
+func (v fakeValue) MarshalJSON() ([]byte, error) {
+	if v.err != nil {
+		return nil, v.err
 	}
+
+	return []byte(`null`), v.err
 }

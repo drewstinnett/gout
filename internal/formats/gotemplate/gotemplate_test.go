@@ -1,47 +1,44 @@
-package formatter_test
+package gotemplate_test
 
 import (
 	"errors"
 	"strings"
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/formatter"
+	_ "github.com/drewstinnett/go-output-format/internal/formats/gotemplate"
+	"github.com/drewstinnett/go-output-format/pkg/config"
+	"github.com/drewstinnett/go-output-format/pkg/formatter"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGoTemplateInvalidDataType(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: "{{ .Title }}",
 	}
 	_, err := formatter.OutputData(func() {}, c)
-	if err == nil {
-		t.Fatalf(`Did not return an error on bad data input`)
-	}
+	require.Error(t, err)
 }
 
 func TestGoTemplateMissingTemplate(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "gotemplate",
 	}
 	_, err := formatter.OutputData("foo", c)
-	if err == nil {
-		t.Fatal("Did not pass a Template parameter to gotemplate, but didn't return an error")
-	}
+	require.Error(t, err)
 }
 
 func TestGoTemplateInvalidTemplate(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: "{{ .Name ",
 	}
 	_, err := formatter.OutputData("foo", c)
-	if err == nil {
-		t.Fatal("Passed a bad template, but didn't error")
-	}
+	require.Error(t, err)
 }
 
 func TestGoTemplateInvalidDataStruct(t *testing.T) {
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: "{{ .Title }}",
 	}
@@ -53,9 +50,7 @@ func TestGoTemplateInvalidDataStruct(t *testing.T) {
 		1984,
 	}
 	_, err := formatter.OutputData(movie, c)
-	if err == nil {
-		t.Fatalf("Did not return on bad data struct")
-	}
+	require.Error(t, err)
 }
 
 func TestGoTemplateFormatStruct(t *testing.T) {
@@ -67,7 +62,7 @@ func TestGoTemplateFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: "{{ .Title }}",
 	}
@@ -75,12 +70,7 @@ func TestGoTemplateFormatStruct(t *testing.T) {
 	got := strings.TrimSpace(string(out))
 
 	want := "Halloween"
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	require.Equal(t, want, got)
 }
 
 func TestGoTemplateFormatStructList(t *testing.T) {
@@ -98,7 +88,7 @@ func TestGoTemplateFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format:   "gotemplate",
 		Template: "{{ .Title }}\n",
 	}
@@ -106,10 +96,17 @@ func TestGoTemplateFormatStructList(t *testing.T) {
 	got := strings.TrimSpace(string(out))
 	want := "Halloween\nPhantasm"
 
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
+	require.Equal(t, want, got)
+}
+
+type fakeValue struct {
+	err error
+}
+
+func (v fakeValue) MarshalJSON() ([]byte, error) {
+	if v.err != nil {
+		return nil, v.err
 	}
+
+	return []byte(`null`), v.err
 }

@@ -1,9 +1,11 @@
-package formatter_test
+package yaml_test
 
 import (
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/formatter"
+	"github.com/drewstinnett/go-output-format/pkg/config"
+	"github.com/drewstinnett/go-output-format/pkg/formatter"
+	"gotest.tools/assert"
 )
 
 func TestYamlFormatStruct(t *testing.T) {
@@ -15,7 +17,7 @@ func TestYamlFormatStruct(t *testing.T) {
 		"Halloween",
 		1978,
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "yaml",
 	}
 	out, _ := formatter.OutputData(movie, c)
@@ -24,12 +26,7 @@ func TestYamlFormatStruct(t *testing.T) {
 	want := `title: Halloween
 year: 1978
 `
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	assert.Equal(t, want, got)
 }
 
 func TestYamlFormatStructList(t *testing.T) {
@@ -47,7 +44,7 @@ func TestYamlFormatStructList(t *testing.T) {
 			1979,
 		},
 	}
-	c := &formatter.Config{
+	c := &config.Config{
 		Format: "yaml",
 	}
 	out, _ := formatter.OutputData(movies, c)
@@ -58,10 +55,5 @@ func TestYamlFormatStructList(t *testing.T) {
 - title: Phantasm
   year: 1979
 `
-	if got != want {
-		t.Fatalf(`values not equal ("%s" != "%s")`,
-			got,
-			want,
-		)
-	}
+	assert.Equal(t, want, got)
 }
