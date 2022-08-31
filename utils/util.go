@@ -3,7 +3,6 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"reflect"
 )
 
@@ -12,7 +11,6 @@ func GenericUnmarshal(data interface{}) ([]map[string]interface{}, error) {
 	j, _ := json.Marshal(data)
 	var jsonSlice []map[string]interface{}
 	baseObjType := reflect.ValueOf(data).Kind()
-	log.Println(baseObjType)
 	var objType string
 	if baseObjType == reflect.Struct {
 		objType = "struct"

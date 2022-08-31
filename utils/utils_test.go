@@ -1,10 +1,9 @@
-package utils_test
+package utils
 
 import (
 	"errors"
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/internal/utils"
 	"github.com/stretchr/testify/require"
 )
 
@@ -12,7 +11,7 @@ func TestSliceContains(t *testing.T) {
 	t.Parallel()
 	s := []string{"foo", "bar", "baz"}
 
-	got := utils.StringInSlice("bar", s)
+	got := StringInSlice("bar", s)
 	require.True(t, got)
 }
 
@@ -20,7 +19,7 @@ func TestSliceNotContains(t *testing.T) {
 	t.Parallel()
 	s := []string{"foo", "bar", "baz"}
 
-	got := utils.StringInSlice("NeverExists", s)
+	got := StringInSlice("NeverExists", s)
 	require.False(t, got)
 }
 
@@ -33,14 +32,14 @@ func TestGenericUnmarshalStruct(t *testing.T) {
 		Name: "Drew",
 		Age:  25,
 	}
-	got, err := utils.GenericUnmarshal(test)
+	got, err := GenericUnmarshal(test)
 	require.NoError(t, err)
 	require.Greater(t, len(got), 0)
 
 	f := fakeValue{
 		errors.New("fail"),
 	}
-	_, err = utils.GenericUnmarshal(f)
+	_, err = GenericUnmarshal(f)
 	require.Error(t, err)
 }
 
@@ -49,7 +48,7 @@ func TestGenericUnmarshalSlice(t *testing.T) {
 		{"foo": "bar"},
 		{"baz": "thing"},
 	}
-	got, err := utils.GenericUnmarshal(test)
+	got, err := GenericUnmarshal(test)
 	require.NoError(t, err)
 	require.Greater(t, len(got), 0)
 }
@@ -59,14 +58,14 @@ func TestGenericUnmarshalPtr(t *testing.T) {
 		{"foo": "bar"},
 		{"baz": "thing"},
 	}
-	got, err := utils.GenericUnmarshal(&test)
+	got, err := GenericUnmarshal(&test)
 	require.NoError(t, err)
 	require.Greater(t, len(got), 0)
 
 	f := fakeValue{
 		errors.New("fail"),
 	}
-	_, err = utils.GenericUnmarshal([]fakeValue{f})
+	_, err = GenericUnmarshal([]fakeValue{f})
 	require.Error(t, err)
 }
 

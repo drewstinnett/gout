@@ -1,10 +1,13 @@
+# go-output-format
+
 [![Test](https://github.com/drewstinnett/go-output-format/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/drewstinnett/go-output-format/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/drewstinnett/go-output-format/branch/main/graph/badge.svg?token=KBITDOWZLQ)](https://codecov.io/gh/drewstinnett/go-output-format)
 [![Go Report Card](https://goreportcard.com/badge/github.com/drewstinnett/go-output-format)](https://goreportcard.com/report/github.com/drewstinnett/go-output-format)
 [![Go Reference](https://pkg.go.dev/badge/github.com/drewstinnett/go-output-format.svg)](https://pkg.go.dev/github.com/drewstinnett/go-output-format)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-# go-output-format
+*NOTE*: V2 is a breaking compatibility change from V1. Going forward, only V2 will
+be developed and supported.
 
 Helper utility to output data structures in to standardized formats, much like
 what is built in to [vault](https://www.vaultproject.io/),
@@ -24,44 +27,48 @@ This tool is intended to provide all that in a single reusable package.
 Import with:
 
 ```go
-import "github.com/drewstinnett/go-output-format/formatter"
+import "github.com/drewstinnett/go-output-format/v2/writer"
 ```
 
 Example Usage:
+
 ```go
-package main
-
 import (
-    "fmt"
-
-    "github.com/drewstinnett/go-output-format/formatter"
+ "os"
+ writer "github.com/drewstinnett/go-output-format/v2"
+ "github.com/drewstinnett/go-output-format/v2/formats/json"
 )
 
 func main() {
-    c := &formatter.Config{
-        Format: "yaml",
-    }
+ w, err := writer.NewClient()
+ if err != nil {
+  panic(err)
+ }
+ // By Default, the YAML format is use, Let's change it to json though
+ w.SetFormatter(json.Formatter{})
 
-    type sample struct {
-        FirstName string
-        LastName  string
-        Age       int
-    }
+ // By Default, print to stdout. Let's change it to stderr though
+ w.SetWriter(os.Stderr)
 
-    person := &sample{FirstName: "Jason", LastName: "Vorhees", Age: 11}
-    out, err := formatter.OutputData(person, c)
-
-    fmt.Println(string(out))
+ // Print it on out!
+ w.Print(struct {
+  FirstName string
+  LastName  string
+ }{
+  FirstName: "Bob",
+  LastName:  "Ross",
+ })
+ // {"FirstName":"Bob","LastName":"Ross"}
 }
 ```
 
-See [examples](examples/) for more example usage
+See [_examples](_examples/) for more example usage
 
-## Formatter details
+## Built-in Formatters
 
 ### YAML
 
-Uses the standard `gopkg.in/yaml.v2` library.
+Uses the standard `gopkg.in/yaml.v3` library.
 
 ### JSON
 
@@ -78,7 +85,9 @@ data out in a more arbitrary format. This uses the `text/template` package to
 parse each item in the return slice. See [the example
 here](examples/templated-output/main.go) for full details.
 
+## Comming Soon?
+
 ### TSV (Tab Separated Values)
 
-Here be dragons, this is one I wrote. Intention here is to have a simple way to
-print out a data structure in a way that grep and the like can parse it.
+Intention here is to have a simple way to print out a data structure in a way
+that grep and the like can parse it.
