@@ -7,7 +7,7 @@ import (
 )
 
 func TestPlainFormatter(t *testing.T) {
-	f := PlainFormatter{}
+	f := Formatter{}
 	got, err := f.Format(struct {
 		Foo string
 	}{

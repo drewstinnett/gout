@@ -7,7 +7,7 @@ import (
 )
 
 func TestTSVFormatter(t *testing.T) {
-	f := TSVFormatter{}
+	f := Formatter{}
 	got, err := f.Format(struct {
 		Foo string
 		Baz string

@@ -46,7 +46,8 @@ func (c *Client) Print(v interface{}) (err error) {
 	if !strings.HasSuffix(s, "\n") {
 		s += "\n"
 	}
-	fmt.Fprintf(c.Writer, s)
+	// fmt.Fprintf(c.Writer, s)
+	fmt.Fprint(c.Writer, s)
 	return err
 }
 

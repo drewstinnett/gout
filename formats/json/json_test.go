@@ -7,7 +7,7 @@ import (
 )
 
 func TestJSONFormatter(t *testing.T) {
-	f := JSONFormatter{}
+	f := Formatter{}
 	got, err := f.Format(struct {
 		Foo string
 	}{

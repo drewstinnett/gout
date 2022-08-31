@@ -7,15 +7,15 @@ import (
 )
 
 func TestGTOFormatterBadInterface(t *testing.T) {
-	f := GoTemplateFormatter{}
-	got, err := f.Format("Just some string, not a GoTemplateFormatterOpts")
+	f := Formatter{}
+	got, err := f.Format("Just some string, not a FormatterOpts")
 	require.Error(t, err)
 	require.Nil(t, got)
 }
 
 func TestGTOFormatter(t *testing.T) {
-	f := GoTemplateFormatter{}
-	opts := GoTemplateFormatterOpts{
+	f := Formatter{}
+	opts := FormatterOpts{
 		Var: struct {
 			Title string
 			Year  int
@@ -32,8 +32,8 @@ func TestGTOFormatter(t *testing.T) {
 }
 
 func TestGTOFormatterMultiVal(t *testing.T) {
-	f := GoTemplateFormatter{}
-	opts := GoTemplateFormatterOpts{
+	f := Formatter{}
+	opts := FormatterOpts{
 		Var: []struct {
 			Title string
 			Year  int

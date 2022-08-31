@@ -23,8 +23,8 @@ func TestWriterPrinter(t *testing.T) {
 	require.Equal(t, "foo: bar\n", buf.String())
 
 	// Make sure we can change the formatter
-	c.SetFormatter(plain.PlainFormatter{})
-	require.IsType(t, plain.PlainFormatter{}, c.Formatter)
+	c.SetFormatter(plain.Formatter{})
+	require.IsType(t, plain.Formatter{}, c.Formatter)
 }
 
 func TestPrintError(t *testing.T) {

@@ -6,16 +6,16 @@ import (
 	"html/template"
 )
 
-type GoTemplateFormatter struct{}
+type Formatter struct{}
 
 // GoTemplateFormatterOpts Options for using the gotemplate formatter
-type GoTemplateFormatterOpts struct {
+type FormatterOpts struct {
 	Var      interface{}
 	Template string
 }
 
-func (w GoTemplateFormatter) Format(v interface{}) ([]byte, error) {
-	opts, ok := v.(GoTemplateFormatterOpts)
+func (w Formatter) Format(v interface{}) ([]byte, error) {
+	opts, ok := v.(FormatterOpts)
 	if !ok {
 		return nil, errors.New("Must pass in a GoTemplateFormatterOpts")
 	}

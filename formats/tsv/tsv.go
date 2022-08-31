@@ -7,11 +7,11 @@ import (
 	"github.com/drewstinnett/go-output-format/utils"
 )
 
-type TSVFormatter struct {
+type Formatter struct {
 	LimitFields []string
 }
 
-func (w TSVFormatter) Format(v interface{}) ([]byte, error) {
+func (w Formatter) Format(v interface{}) ([]byte, error) {
 	// func (p *plug) Format(data interface{}, config *config.Config) ([]byte, error) {
 	jsonSlice, err := utils.GenericUnmarshal(v)
 	if err != nil {
