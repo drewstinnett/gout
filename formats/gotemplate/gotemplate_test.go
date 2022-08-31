@@ -31,6 +31,23 @@ func TestGTOFormatter(t *testing.T) {
 	require.Equal(t, "Ghostbusters", string(got))
 }
 
+func TestGTOFormatterTemplateError(t *testing.T) {
+	f := Formatter{}
+	opts := FormatterOpts{
+		Var: struct {
+			Title string
+			Year  int
+		}{
+			Title: "Ghostbusters",
+			Year:  1985,
+		},
+		Template: "{{ .NotExistingField }}",
+	}
+	got, err := f.Format(opts)
+	require.Error(t, err)
+	require.Nil(t, got)
+}
+
 func TestGTOFormatterMultiVal(t *testing.T) {
 	f := Formatter{}
 	opts := FormatterOpts{
