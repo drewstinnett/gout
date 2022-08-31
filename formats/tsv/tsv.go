@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/drewstinnett/go-output-format/utils"
+	"github.com/drewstinnett/go-output-format/v2/utils"
 )
 
 type Formatter struct {

@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/drewstinnett/go-output-format/formats/yaml"
+	"github.com/drewstinnett/go-output-format/v2/formats/yaml"
 )
 
 type Formatter interface {

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/formats/plain"
+	"github.com/drewstinnett/go-output-format/v2/formats/plain"
 	"github.com/stretchr/testify/require"
 )
 

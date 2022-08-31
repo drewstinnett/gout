@@ -1,4 +1,4 @@
-module github.com/drewstinnett/go-output-format
+module github.com/drewstinnett/go-output-format/v2
 
 go 1.19
 
