@@ -64,7 +64,7 @@ func main() {
 
 See [_examples](_examples/) for more example usage
 
-## Formatter details
+## Built-in Formatters
 
 ### YAML
 
@@ -85,7 +85,9 @@ data out in a more arbitrary format. This uses the `text/template` package to
 parse each item in the return slice. See [the example
 here](examples/templated-output/main.go) for full details.
 
+## Comming Soon?
+
 ### TSV (Tab Separated Values)
 
-Here be dragons, this is one I wrote. Intention here is to have a simple way to
-print out a data structure in a way that grep and the like can parse it.
+Intention here is to have a simple way to print out a data structure in a way
+that grep and the like can parse it.

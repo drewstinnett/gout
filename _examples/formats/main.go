@@ -6,7 +6,6 @@ import (
 	writer "github.com/drewstinnett/go-output-format/v2"
 	"github.com/drewstinnett/go-output-format/v2/formats/json"
 	"github.com/drewstinnett/go-output-format/v2/formats/plain"
-	"github.com/drewstinnett/go-output-format/v2/formats/tsv"
 	"github.com/drewstinnett/go-output-format/v2/formats/yaml"
 )
 
@@ -27,7 +26,6 @@ func main() {
 	}
 	formats := map[string]writer.Formatter{
 		"yaml":  yaml.Formatter{},
-		"tsv":   tsv.Formatter{},
 		"plain": plain.Formatter{},
 		"json":  json.Formatter{},
 	}
