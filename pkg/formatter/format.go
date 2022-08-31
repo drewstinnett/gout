@@ -22,17 +22,6 @@ type Formatter interface {
 
 type Format interface{}
 
-// formatters Map of the different types of formatting we do here. The
-// formatter must be registered in this map to be available
-/*
-var formatters = map[string]Formatter{
-	"json":       formats.JSONFormatter{},
-	"tsv":        formats.TSVFormatter{},
-	"plain":      formats.PlainFormatter{},
-	"gotemplate": formats.GoTemplateFormatter{},
-}
-*/
-
 // GetFormats Return a list of formats available in formatters. Useful if you
 // need to check what formatters are available in a standardized way
 func GetFormats() []string {
