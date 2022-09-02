@@ -45,10 +45,11 @@ func TestWriterPrinterMulti(t *testing.T) {
 	require.NoError(t, err)
 	var buf bytes.Buffer
 	c.SetWriter(&buf)
-	c.PrintMulti(
+	err = c.PrintMulti(
 		struct{ Foo string }{Foo: "bar"},
 		struct{ Year int }{Year: 1978},
 	)
+	require.NoError(t, err)
 	require.Equal(t, "- foo: bar\n- year: 1978\n", buf.String())
 }
 
