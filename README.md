@@ -85,9 +85,15 @@ data out in a more arbitrary format. This uses the `text/template` package to
 parse each item in the return slice. See [the example
 here](examples/templated-output/main.go) for full details.
 
-## Comming Soon?
+## Coming Soon/TODO
 
 ### TSV (Tab Separated Values)
 
 Intention here is to have a simple way to print out a data structure in a way
 that grep and the like can parse it.
+
+### Cobra Integrations
+
+To make it as easy as possible to integrate in CLI apps, I'd like to add some
+bindings for automatically creating the writer from
+[cobra](https://github.com/spf13/cobra) arguments

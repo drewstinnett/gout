@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
 	writer "github.com/drewstinnett/go-output-format/v2"
 	"github.com/drewstinnett/go-output-format/v2/formats/json"
@@ -31,10 +31,14 @@ func main() {
 	}
 	c, _ := writer.NewClient()
 	for formatN, formatF := range formats {
-		log.Printf("Format: %v\n", formatN)
+		fmt.Printf("# Format: %v\n", formatN)
 		c.SetFormatter(formatF)
+		fmt.Println("## Person")
 		c.MustPrint(person)
+		fmt.Println("## People")
 		c.MustPrint(people)
+		fmt.Println()
 	}
+
 	// fmt.Println(string(b))
 }
