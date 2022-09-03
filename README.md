@@ -110,9 +110,3 @@ here](examples/templated-output/main.go) for full details.
 
 Intention here is to have a simple way to print out a data structure in a way
 that grep and the like can parse it.
-
-### Cobra Integrations
-
-To make it as easy as possible to integrate in CLI apps, I'd like to add some
-bindings for automatically creating the writer from
-[cobra](https://github.com/spf13/cobra) arguments
