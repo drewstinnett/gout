@@ -27,7 +27,7 @@ This tool is intended to provide all that in a single reusable package.
 Import with:
 
 ```go
-import "github.com/drewstinnett/go-output-format/v2/writer"
+import "github.com/drewstinnett/go-output-format/v2/gout"
 ```
 
 Example Usage:
@@ -35,12 +35,12 @@ Example Usage:
 ```go
 import (
  "os"
- writer "github.com/drewstinnett/go-output-format/v2"
+ "github.com/drewstinnett/go-output-format/v2/gout"
  "github.com/drewstinnett/go-output-format/v2/formats/json"
 )
 
 func main() {
- w, err := writer.NewClient()
+ w, err := gout.New()
  if err != nil {
   panic(err)
  }

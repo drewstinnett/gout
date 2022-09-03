@@ -7,18 +7,10 @@ import (
 	"os"
 
 	"github.com/drewstinnett/go-output-format/v2/formats/yaml"
-	"github.com/spf13/cobra"
 )
 
 type Formatter interface {
 	Format(interface{}) ([]byte, error)
-}
-
-// Manipulator given a single (or more) interface, return it's []byte
-// representation. This should be used for decisions like writing out single vs
-// multiple items in a line feed
-type Manipulator interface {
-	Format(...interface{}) ([]byte, error)
 }
 
 // Client is a structure you can use that contains a formatter, and a target
@@ -93,33 +85,12 @@ func (c *Client) MustPrintMulti(v ...interface{}) {
 }
 
 // NewClient creates a pointer to a new writer, with some sensible defaults
-func NewClient() (*Client, error) {
+func New() (*Client, error) {
 	c := &Client{
 		Formatter: yaml.Formatter{},
 		Writer:    os.Stdout,
 	}
 	return c, nil
-}
-
-// CobraCmdConfig defines what fields the formatting values are stored in
-type CobraCmdConfig struct {
-	FormatField string
-}
-
-// NewClientWithCobraCmd creates a pointer to a new writer with options from a cobra.Command
-func NewClientWithCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) (*Client, error) {
-	if config == nil {
-		config = &CobraCmdConfig{
-			FormatField: "format",
-		}
-	}
-	format, err := cmd.Flags().GetString("format")
-	if err != nil {
-		return nil, err
-	}
-	_ = format
-	_ = config
-	return nil, nil
 }
 
 func (c *Client) itemizedFormatter(v ...interface{}) ([]byte, error) {

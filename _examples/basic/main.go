@@ -3,12 +3,12 @@ package main
 import (
 	"os"
 
-	writer "github.com/drewstinnett/go-output-format/v2"
 	"github.com/drewstinnett/go-output-format/v2/formats/json"
+	"github.com/drewstinnett/go-output-format/v2/gout"
 )
 
 func main() {
-	w, err := writer.NewClient()
+	w, err := gout.New()
 	if err != nil {
 		panic(err)
 	}

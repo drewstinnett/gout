@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	gout "github.com/drewstinnett/go-output-format/v2"
 	"github.com/drewstinnett/go-output-format/v2/formats/json"
 	"github.com/drewstinnett/go-output-format/v2/formats/plain"
 	"github.com/drewstinnett/go-output-format/v2/formats/yaml"
+	"github.com/drewstinnett/go-output-format/v2/gout"
 )
 
 type sample struct {
@@ -29,7 +29,7 @@ func main() {
 		"plain": plain.Formatter{},
 		"json":  json.Formatter{},
 	}
-	c, _ := gout.NewClient()
+	c, _ := gout.New()
 	for formatN, formatF := range formats {
 		fmt.Printf("# Format: %v\n", formatN)
 		c.SetFormatter(formatF)
