@@ -1,4 +1,4 @@
-package writer
+package gout
 
 import (
 	"bytes"
@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/drewstinnett/go-output-format/v2/formats/yaml"
+	"github.com/spf13/cobra"
 )
 
 type Formatter interface {
@@ -98,6 +99,27 @@ func NewClient() (*Client, error) {
 		Writer:    os.Stdout,
 	}
 	return c, nil
+}
+
+// CobraCmdConfig defines what fields the formatting values are stored in
+type CobraCmdConfig struct {
+	FormatField string
+}
+
+// NewClientWithCobraCmd creates a pointer to a new writer with options from a cobra.Command
+func NewClientWithCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) (*Client, error) {
+	if config == nil {
+		config = &CobraCmdConfig{
+			FormatField: "format",
+		}
+	}
+	format, err := cmd.Flags().GetString("format")
+	if err != nil {
+		return nil, err
+	}
+	_ = format
+	_ = config
+	return nil, nil
 }
 
 func (c *Client) itemizedFormatter(v ...interface{}) ([]byte, error) {
