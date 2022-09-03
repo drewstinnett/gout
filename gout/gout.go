@@ -1,4 +1,4 @@
-package writer
+package gout
 
 import (
 	"bytes"
@@ -11,13 +11,6 @@ import (
 
 type Formatter interface {
 	Format(interface{}) ([]byte, error)
-}
-
-// Manipulator given a single (or more) interface, return it's []byte
-// representation. This should be used for decisions like writing out single vs
-// multiple items in a line feed
-type Manipulator interface {
-	Format(...interface{}) ([]byte, error)
 }
 
 // Client is a structure you can use that contains a formatter, and a target
@@ -92,7 +85,7 @@ func (c *Client) MustPrintMulti(v ...interface{}) {
 }
 
 // NewClient creates a pointer to a new writer, with some sensible defaults
-func NewClient() (*Client, error) {
+func New() (*Client, error) {
 	c := &Client{
 		Formatter: yaml.Formatter{},
 		Writer:    os.Stdout,

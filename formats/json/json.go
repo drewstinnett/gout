@@ -1,6 +1,8 @@
 package json
 
-import ujson "encoding/json"
+import (
+	ujson "encoding/json"
+)
 
 type Formatter struct{}
 

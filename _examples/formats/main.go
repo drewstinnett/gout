@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	writer "github.com/drewstinnett/go-output-format/v2"
 	"github.com/drewstinnett/go-output-format/v2/formats/json"
 	"github.com/drewstinnett/go-output-format/v2/formats/plain"
 	"github.com/drewstinnett/go-output-format/v2/formats/yaml"
+	"github.com/drewstinnett/go-output-format/v2/gout"
 )
 
 type sample struct {
@@ -24,12 +24,12 @@ func main() {
 		sample{FirstName: "Freddy", LastName: "Krueger", Age: 35},
 		sample{FirstName: "Michael", LastName: "Myers", Age: 13},
 	}
-	formats := map[string]writer.Formatter{
+	formats := map[string]gout.Formatter{
 		"yaml":  yaml.Formatter{},
 		"plain": plain.Formatter{},
 		"json":  json.Formatter{},
 	}
-	c, _ := writer.NewClient()
+	c, _ := gout.New()
 	for formatN, formatF := range formats {
 		fmt.Printf("# Format: %v\n", formatN)
 		c.SetFormatter(formatF)

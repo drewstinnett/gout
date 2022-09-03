@@ -1,4 +1,4 @@
-package writer
+package gout
 
 import (
 	"bytes"
@@ -11,13 +11,13 @@ import (
 )
 
 func TestNewWriter(t *testing.T) {
-	c, err := NewClient()
+	c, err := New()
 	require.NoError(t, err)
 	require.NotNil(t, c)
 }
 
 func TestWriterPrinter(t *testing.T) {
-	c, err := NewClient()
+	c, err := New()
 	require.NoError(t, err)
 	var buf bytes.Buffer
 	c.SetWriter(&buf)
@@ -30,7 +30,7 @@ func TestWriterPrinter(t *testing.T) {
 }
 
 func TestPrintError(t *testing.T) {
-	c, err := NewClient()
+	c, err := New()
 	require.NoError(t, err)
 	err = c.Print(make(chan int))
 	require.Error(t, err)
@@ -41,7 +41,7 @@ func TestPrintError(t *testing.T) {
 }
 
 func TestWriterPrinterMulti(t *testing.T) {
-	c, err := NewClient()
+	c, err := New()
 	require.NoError(t, err)
 	var buf bytes.Buffer
 	c.SetWriter(&buf)
@@ -54,7 +54,7 @@ func TestWriterPrinterMulti(t *testing.T) {
 }
 
 func TestWriterAddNewlines(t *testing.T) {
-	c, err := NewClient()
+	c, err := New()
 	require.NoError(t, err)
 	c.SetFormatter(json.Formatter{})
 	var buf bytes.Buffer
