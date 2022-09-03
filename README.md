@@ -95,6 +95,10 @@ Uses the standard `gopkg.in/yaml.v3` library.
 
 Uses the standard `encoding/json` library.
 
+### TOML
+
+Uses `github.com/pelletier/go-toml/v2` library
+
 ### Plain
 
 This is just vanilla old Golang output, using the `%+v` format.
