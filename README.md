@@ -104,6 +104,11 @@ Uses `github.com/pelletier/go-toml/v2` library
 Uses `github.com/jszwec/csvutil` library. NOTE: You must pass an iterable
 interface in when using this format. It won't do a single struct.
 
+### XML
+
+Uses `encoding/xml` library. NOTE: This plugin only works with structs supported
+by the base library
+
 ### Plain
 
 This is just vanilla old Golang output, using the `%+v` format.
