@@ -81,6 +81,8 @@ w, err := NewWithCobraCmd(cmd, &gout.CobraCmdConfig{
 })
 ```
 
+By default, the gout will use os.Stdout as the default writer.
+
 See [_examples](_examples/) for more example usage
 
 ## Built-in Formatters

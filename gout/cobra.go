@@ -2,6 +2,7 @@ package gout
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -36,7 +37,10 @@ func NewWithCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) (*Client, error
 	if err != nil {
 		return nil, fmt.Errorf("The flag '%v' is not available", config.FormatField)
 	}
-	c := &Client{}
+	// Default this writer to stdout
+	c := &Client{
+		Writer: os.Stdout,
+	}
 	if fr, ok := BuiltInFormatters[format]; ok {
 		c.SetFormatter(fr)
 	} else {
