@@ -13,7 +13,7 @@ type CobraCmdConfig struct {
 }
 
 // NewClientWithCobraCmd creates a pointer to a new writer with options from a cobra.Command
-func NewClientWithCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) (*Client, error) {
+func NewWithCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) (*Client, error) {
 	var err error
 	if config == nil {
 		config = &CobraCmdConfig{

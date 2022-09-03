@@ -24,6 +24,8 @@ This tool is intended to provide all that in a single reusable package.
 
 ## Usage
 
+### Basic
+
 Import with:
 
 ```go
@@ -60,6 +62,23 @@ func main() {
  })
  // {"FirstName":"Bob","LastName":"Ross"}
 }
+```
+
+### Cobra Integration
+
+To simplify using this in new projects, you can use the `NewWithCobraCmd`
+method. Example:
+
+```go
+// By default, look for a field called 'format'
+w, err := NewWithCobraCmd(cmd, nil)
+```
+
+```go
+// Or pass a configuration object with what the field is called
+w, err := NewWithCobraCmd(cmd, &gout.CobraCmdConfig{
+        FormatField: "my-special-name-field",
+})
 ```
 
 See [_examples](_examples/) for more example usage
