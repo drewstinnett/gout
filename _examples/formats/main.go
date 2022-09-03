@@ -26,8 +26,11 @@ func main() {
 		if formatN != "gotemplate" {
 			fmt.Printf("# Format: %v\n", formatN)
 			c.SetFormatter(formatF)
-			fmt.Println("## Person")
-			c.MustPrint(person)
+			// CSV Formatter won't work on a single object, has to be iterable
+			if formatN != "csv" {
+				fmt.Println("## Person")
+				c.MustPrint(person)
+			}
 			fmt.Println("## People")
 			c.MustPrint(people)
 			fmt.Println()

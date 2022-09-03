@@ -99,6 +99,11 @@ Uses the standard `encoding/json` library.
 
 Uses `github.com/pelletier/go-toml/v2` library
 
+### CSV
+
+Uses `github.com/jszwec/csvutil` library. NOTE: You must pass an iterable
+interface in when using this format. It won't do a single struct.
+
 ### Plain
 
 This is just vanilla old Golang output, using the `%+v` format.

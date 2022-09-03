@@ -1,6 +1,7 @@
 package gout
 
 import (
+	"github.com/drewstinnett/go-output-format/v2/formats/csv"
 	"github.com/drewstinnett/go-output-format/v2/formats/gotemplate"
 	"github.com/drewstinnett/go-output-format/v2/formats/json"
 	"github.com/drewstinnett/go-output-format/v2/formats/plain"
@@ -14,5 +15,6 @@ var BuiltInFormatters = map[string]Formatter{
 	"yaml":       yaml.Formatter{},
 	"plain":      plain.Formatter{},
 	"toml":       toml.Formatter{},
+	"csv":        csv.Formatter{},
 	"gotemplate": gotemplate.Formatter{},
 }
