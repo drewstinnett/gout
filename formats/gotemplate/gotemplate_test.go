@@ -3,29 +3,23 @@ package gotemplate
 import (
 	"testing"
 
+	"github.com/drewstinnett/go-output-format/v2/config"
 	"github.com/stretchr/testify/require"
 )
 
-func TestGTOFormatterBadInterface(t *testing.T) {
-	f := Formatter{}
-	got, err := f.Format("Just some string, not a FormatterOpts")
-	require.Error(t, err)
-	require.Nil(t, got)
-}
-
 func TestGTOFormatter(t *testing.T) {
 	f := Formatter{}
-	opts := FormatterOpts{
-		Var: struct {
-			Title string
-			Year  int
-		}{
-			Title: "Ghostbusters",
-			Year:  1985,
-		},
-		Template: "{{ .Title }}",
+	v := struct {
+		Title string
+		Year  int
+	}{
+		Title: "Ghostbusters",
+		Year:  1985,
 	}
-	got, err := f.Format(opts)
+	opts := config.FormatterOpts{
+		"template": "{{ .Title }}",
+	}
+	got, err := f.FormatWithOpts(v, opts)
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "Ghostbusters", string(got))
@@ -33,41 +27,75 @@ func TestGTOFormatter(t *testing.T) {
 
 func TestGTOFormatterTemplateError(t *testing.T) {
 	f := Formatter{}
-	opts := FormatterOpts{
-		Var: struct {
-			Title string
-			Year  int
-		}{
-			Title: "Ghostbusters",
-			Year:  1985,
-		},
-		Template: "{{ .NotExistingField }}",
+	v := struct {
+		Title string
+		Year  int
+	}{
+		Title: "Ghostbusters",
+		Year:  1985,
 	}
-	got, err := f.Format(opts)
+	opts := config.FormatterOpts{
+		"template": "{{ .NotExistingField }}",
+	}
+	got, err := f.FormatWithOpts(v, opts)
 	require.Error(t, err)
 	require.Nil(t, got)
 }
 
 func TestGTOFormatterMultiVal(t *testing.T) {
 	f := Formatter{}
-	opts := FormatterOpts{
-		Var: []struct {
-			Title string
-			Year  int
-		}{
-			{
-				Title: "Ghostbusters",
-				Year:  1985,
-			},
-			{
-				Title: "Halloween",
-				Year:  1978,
-			},
+	v := []struct {
+		Title string
+		Year  int
+	}{
+		{
+			Title: "Ghostbusters",
+			Year:  1985,
 		},
-		Template: "{{ range . }}{{ .Title }}\n{{ end }}",
+		{
+			Title: "Halloween",
+			Year:  1978,
+		},
 	}
-	got, err := f.Format(opts)
+	opts := config.FormatterOpts{
+		"template": "{{ range . }}{{ .Title }}\n{{ end }}",
+	}
+	got, err := f.FormatWithOpts(v, opts)
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "Ghostbusters\nHalloween\n", string(got))
+}
+
+func TestGTOWithOptsFormatter(t *testing.T) {
+	f := Formatter{}
+	v := struct {
+		Title string
+		Year  int
+	}{
+		Title: "Ghostbusters",
+		Year:  1985,
+	}
+	opts := config.FormatterOpts{
+		"template": "{{ .Title }}",
+	}
+	got, err := f.FormatWithOpts(v, opts)
+	require.NoError(t, err)
+	require.NotNil(t, got)
+	require.Equal(t, "Ghostbusters", string(got))
+}
+
+func TestGTOWithOptsFormatterMissingTemplate(t *testing.T) {
+	f := Formatter{}
+	v := struct {
+		Title string
+		Year  int
+	}{
+		Title: "Ghostbusters",
+		Year:  1985,
+	}
+	// No 'template' option
+	opts := config.FormatterOpts{}
+	got, err := f.FormatWithOpts(v, opts)
+	require.Error(t, err)
+	require.Nil(t, got)
 }
