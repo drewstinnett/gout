@@ -118,7 +118,7 @@ This is just vanilla old Golang output, using the `%+v` format.
 Use this format to parse the data in to a golang template. Useful for spitting
 data out in a more arbitrary format. This uses the `text/template` package to
 parse each item in the return slice. See [the example
-here](examples/templated-output/main.go) for full details.
+here](_examples/gotemplate/main.go) for full details.
 
 ## Coming Soon/TODO
 
