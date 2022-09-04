@@ -7,6 +7,21 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestGTOFormatterFormat(t *testing.T) {
+	f := Formatter{}
+	v := struct {
+		Title string
+		Year  int
+	}{
+		Title: "Ghostbusters",
+		Year:  1985,
+	}
+	got, err := f.Format(v)
+	require.NoError(t, err)
+	require.NotNil(t, got)
+	require.Equal(t, "{Title:Ghostbusters Year:1985}", string(got))
+}
+
 func TestGTOFormatter(t *testing.T) {
 	f := Formatter{}
 	v := struct {

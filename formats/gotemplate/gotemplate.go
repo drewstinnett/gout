@@ -18,7 +18,7 @@ type FormatterOpts struct {
 
 func (w Formatter) Format(v interface{}) ([]byte, error) {
 	return w.FormatWithOpts(v, config.FormatterOpts{
-		"template": `{{ . }}`,
+		"template": `{{ printf "%+v" . }}`,
 	})
 }
 
