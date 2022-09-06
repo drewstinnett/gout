@@ -9,10 +9,12 @@ type Formatter struct {
 	ctx context.Context
 }
 
+type IndentField struct{}
+
 func (w Formatter) Format(v interface{}) ([]byte, error) {
 	var i any
 	if w.ctx != nil {
-		i = w.ctx.Value("indent")
+		i = w.ctx.Value(IndentField{})
 	}
 	if i == nil {
 		return ujson.Marshal(v)

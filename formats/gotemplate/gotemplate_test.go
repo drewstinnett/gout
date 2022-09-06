@@ -35,7 +35,7 @@ func TestGTOFormatter(t *testing.T) {
 	opts := config.FormatterOpts{
 		"template": "{{ .Title }}",
 	}
-	got, err := f.FormatWithOpts(v, opts)
+	got, err := f.formatWithOpts(v, opts)
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "Ghostbusters", string(got))
@@ -53,7 +53,7 @@ func TestGTOFormatterTemplateError(t *testing.T) {
 	opts := config.FormatterOpts{
 		"template": "{{ .NotExistingField }}",
 	}
-	got, err := f.FormatWithOpts(v, opts)
+	got, err := f.formatWithOpts(v, opts)
 	require.Error(t, err)
 	require.Nil(t, got)
 }
@@ -76,7 +76,7 @@ func TestGTOFormatterMultiVal(t *testing.T) {
 	opts := config.FormatterOpts{
 		"template": "{{ range . }}{{ .Title }}\n{{ end }}",
 	}
-	got, err := f.FormatWithOpts(v, opts)
+	got, err := f.formatWithOpts(v, opts)
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "Ghostbusters\nHalloween\n", string(got))
@@ -94,7 +94,7 @@ func TestGTOWithOptsFormatter(t *testing.T) {
 	opts := config.FormatterOpts{
 		"template": "{{ .Title }}",
 	}
-	got, err := f.FormatWithOpts(v, opts)
+	got, err := f.formatWithOpts(v, opts)
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "Ghostbusters", string(got))
@@ -111,7 +111,7 @@ func TestGTOWithOptsFormatterMissingTemplate(t *testing.T) {
 	}
 	// No 'template' option
 	opts := config.FormatterOpts{}
-	got, err := f.FormatWithOpts(v, opts)
+	got, err := f.formatWithOpts(v, opts)
 	require.Error(t, err)
 	require.Nil(t, got)
 }
@@ -125,7 +125,7 @@ func TestFormatWithContext(t *testing.T) {
 		Title: "Ghostbusters",
 		Year:  1985,
 	}
-	ctx := context.WithValue(context.Background(), "template", "{{ .Title }}")
+	ctx := context.WithValue(context.Background(), TemplateField{}, "{{ .Title }}")
 	got, err := f.FormatWithContext(ctx, v)
 	require.NoError(t, err)
 	require.NotNil(t, got)

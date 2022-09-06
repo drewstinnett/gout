@@ -21,7 +21,7 @@ func TestJSONFormatter(t *testing.T) {
 
 func TestJSONFormatterWithOpts(t *testing.T) {
 	f := Formatter{}
-	ctx := context.WithValue(context.Background(), "indent", "yes")
+	ctx := context.WithValue(context.Background(), IndentField{}, "yes")
 	got, err := f.FormatWithContext(ctx, struct {
 		Foo string
 	}{
