@@ -1,9 +1,8 @@
 package csv
 
 import (
-	"errors"
+	"context"
 
-	"github.com/drewstinnett/go-output-format/v2/config"
 	"github.com/jszwec/csvutil"
 )
 
@@ -13,6 +12,6 @@ func (w Formatter) Format(v interface{}) ([]byte, error) {
 	return csvutil.Marshal(v)
 }
 
-func (w Formatter) FormatWithOpts(v interface{}, o config.FormatterOpts) ([]byte, error) {
-	return nil, errors.New("not yet implemented")
+func (w Formatter) FormatWithContext(ctx context.Context, v interface{}) ([]byte, error) {
+	return w.Format(v)
 }

@@ -1,24 +1,30 @@
 package json
 
 import (
+	"context"
 	ujson "encoding/json"
-
-	"github.com/drewstinnett/go-output-format/v2/config"
 )
 
-type Formatter struct{}
-
-func (w Formatter) Format(v interface{}) ([]byte, error) {
-	return ujson.Marshal(v)
+type Formatter struct {
+	ctx context.Context
 }
 
-func (w Formatter) FormatWithOpts(v interface{}, o config.FormatterOpts) ([]byte, error) {
-	var prefix, indent string
-	if v, ok := o["indent"]; ok {
-		indent = v.(string)
+func (w Formatter) Format(v interface{}) ([]byte, error) {
+	var i any
+	if w.ctx != nil {
+		i = w.ctx.Value("indent")
 	}
-	if v, ok := o["prefix"]; ok {
-		prefix = v.(string)
+	if i == nil {
+		return ujson.Marshal(v)
 	}
-	return ujson.MarshalIndent(v, prefix, indent)
+	return ujson.MarshalIndent(v, "", "  ")
+}
+
+func (w Formatter) FormatWithContext(ctx context.Context, v interface{}) ([]byte, error) {
+	return w.withContext(ctx).Format(v)
+}
+
+func (w *Formatter) withContext(ctx context.Context) *Formatter {
+	w.ctx = ctx
+	return w
 }

@@ -2,18 +2,19 @@ package gout
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"os"
 
-	"github.com/drewstinnett/go-output-format/v2/config"
 	"github.com/drewstinnett/go-output-format/v2/formats/yaml"
 )
 
 // Formatter interface that defines how a thing can be formatted for output
 type Formatter interface {
 	Format(interface{}) ([]byte, error)
-	FormatWithOpts(interface{}, config.FormatterOpts) ([]byte, error)
+	// FormatWithOpts(interface{}, config.FormatterOpts) ([]byte, error)
+	FormatWithContext(context.Context, interface{}) ([]byte, error)
 }
 
 // FormatterOpts is an arbitrary configuration map to interface. Pass useful

@@ -1,9 +1,9 @@
 package json
 
 import (
+	"context"
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/v2/config"
 	"github.com/stretchr/testify/require"
 )
 
@@ -21,16 +21,13 @@ func TestJSONFormatter(t *testing.T) {
 
 func TestJSONFormatterWithOpts(t *testing.T) {
 	f := Formatter{}
-	o := config.FormatterOpts{
-		"indent": "  ",
-		"prefix": "+",
-	}
-	got, err := f.FormatWithOpts(struct {
+	ctx := context.WithValue(context.Background(), "indent", "yes")
+	got, err := f.FormatWithContext(ctx, struct {
 		Foo string
 	}{
 		Foo: "bar",
-	}, o)
+	})
 	require.NoError(t, err)
 	require.IsType(t, []byte{}, got)
-	require.Equal(t, string("{\n+  \"Foo\": \"bar\"\n+}"), string(got))
+	require.Equal(t, string("{\n  \"Foo\": \"bar\"\n}"), string(got))
 }

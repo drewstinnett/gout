@@ -1,6 +1,7 @@
 package gotemplate
 
 import (
+	"context"
 	"testing"
 
 	"github.com/drewstinnett/go-output-format/v2/config"
@@ -113,4 +114,20 @@ func TestGTOWithOptsFormatterMissingTemplate(t *testing.T) {
 	got, err := f.FormatWithOpts(v, opts)
 	require.Error(t, err)
 	require.Nil(t, got)
+}
+
+func TestFormatWithContext(t *testing.T) {
+	f := Formatter{}
+	v := struct {
+		Title string
+		Year  int
+	}{
+		Title: "Ghostbusters",
+		Year:  1985,
+	}
+	ctx := context.WithValue(context.Background(), "template", "{{ .Title }}")
+	got, err := f.FormatWithContext(ctx, v)
+	require.NoError(t, err)
+	require.NotNil(t, got)
+	require.Equal(t, "Ghostbusters", string(got))
 }
