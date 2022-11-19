@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/v2/config"
+	"github.com/drewstinnett/gout/v2/config"
 	"github.com/stretchr/testify/require"
 )
 

@@ -7,7 +7,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/drewstinnett/go-output-format/v2/formats/yaml"
+	"github.com/drewstinnett/gout/v2/formats/yaml"
 )
 
 // Formatter interface that defines how a thing can be formatted for output
@@ -21,9 +21,9 @@ type Formatter interface {
 // format specific options in here
 type FormatterOpts map[string]interface{}
 
-// Client is a structure you can use that contains a formatter, and a target
+// Gout is a structure you can use that contains a formatter, and a target
 // io.Writer
-type Client struct {
+type Gout struct {
 	// The format!
 	Formatter Formatter
 	// Target io.Writer output
@@ -32,34 +32,34 @@ type Client struct {
 
 // SetWriter set the io.Writer that will be used for printing. By default, this
 // will be os.Stdout
-func (c *Client) SetWriter(i io.Writer) {
-	c.Writer = i
+func (g *Gout) SetWriter(i io.Writer) {
+	g.Writer = i
 }
 
 // SetFormatter sets the Formatter to use for the text.
-func (c *Client) SetFormatter(f Formatter) {
-	c.Formatter = f
+func (g *Gout) SetFormatter(f Formatter) {
+	g.Formatter = f
 }
 
 // Print print an interface using the given Formatter and io.Writer
-func (c *Client) Print(v interface{}) (err error) {
+func (g *Gout) Print(v interface{}) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = fmt.Errorf("Panic while attempting to format: %v", r)
 		}
 	}()
 	var b []byte
-	b, err = c.itemizedFormatter(v)
+	b, err = g.itemizedFormatter(v)
 	if err != nil {
 		return err
 	}
-	fmt.Fprint(c.Writer, string(b))
+	fmt.Fprint(g.Writer, string(b))
 	return err
 }
 
 // PrintMulti useful when wanting to print multiple interfaces to a single
 // serialized item
-func (c *Client) PrintMulti(v ...interface{}) (err error) {
+func (g *Gout) PrintMulti(v ...interface{}) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = fmt.Errorf("Panic while attempting to format: %v", r)
@@ -67,17 +67,17 @@ func (c *Client) PrintMulti(v ...interface{}) (err error) {
 	}()
 	var b []byte
 	// b, err = c.condensedFormatter(v)
-	b, err = c.itemizedFormatter(v)
+	b, err = g.itemizedFormatter(v)
 	if err != nil {
 		return err
 	}
-	fmt.Fprint(c.Writer, string(b))
+	fmt.Fprint(g.Writer, string(b))
 	return err
 }
 
 // MustPrint print an interface and panic if there is any sort of error
-func (c *Client) MustPrint(v interface{}) {
-	err := c.Print(v)
+func (g *Gout) MustPrint(v interface{}) {
+	err := g.Print(v)
 	if err != nil {
 		panic(err)
 	}
@@ -85,26 +85,26 @@ func (c *Client) MustPrint(v interface{}) {
 
 // MustPrintMulti print an multiple interfaces and panic if there is any sort of
 // error
-func (c *Client) MustPrintMulti(v ...interface{}) {
-	err := c.PrintMulti(v)
+func (g *Gout) MustPrintMulti(v ...interface{}) {
+	err := g.PrintMulti(v)
 	if err != nil {
 		panic(err)
 	}
 }
 
-// NewClient creates a pointer to a new writer, with some sensible defaults
-func New() (*Client, error) {
-	c := &Client{
+// New creates a pointer to a new Gout, with some sensible defaults
+func New() (*Gout, error) {
+	g := &Gout{
 		Formatter: yaml.Formatter{},
 		Writer:    os.Stdout,
 	}
-	return c, nil
+	return g, nil
 }
 
-func (c *Client) itemizedFormatter(v ...interface{}) ([]byte, error) {
+func (g *Gout) itemizedFormatter(v ...interface{}) ([]byte, error) {
 	var buf bytes.Buffer
 	for _, item := range v {
-		bi, err := c.Formatter.Format(item)
+		bi, err := g.Formatter.Format(item)
 		if err != nil {
 			return nil, err
 		}

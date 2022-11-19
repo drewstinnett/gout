@@ -6,7 +6,7 @@ import (
 	"errors"
 	"text/template"
 
-	"github.com/drewstinnett/go-output-format/v2/config"
+	"github.com/drewstinnett/gout/v2/config"
 )
 
 type Formatter struct {

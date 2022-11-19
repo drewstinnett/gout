@@ -1,13 +1,15 @@
-# go-output-format
+# gout (Previously gout)
 
-[![Test](https://github.com/drewstinnett/go-output-format/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/drewstinnett/go-output-format/actions/workflows/test.yml)
-[![codecov](https://codecov.io/gh/drewstinnett/go-output-format/branch/main/graph/badge.svg?token=KBITDOWZLQ)](https://codecov.io/gh/drewstinnett/go-output-format)
-[![Go Report Card](https://goreportcard.com/badge/github.com/drewstinnett/go-output-format)](https://goreportcard.com/report/github.com/drewstinnett/go-output-format)
-[![Go Reference](https://pkg.go.dev/badge/github.com/drewstinnett/go-output-format.svg)](https://pkg.go.dev/github.com/drewstinnett/go-output-format)
+[![Test](https://github.com/drewstinnett/gout/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/drewstinnett/gout/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/drewstinnett/gout/branch/main/graph/badge.svg?token=KBITDOWZLQ)](https://codecov.io/gh/drewstinnett/gout)
+[![Go Report Card](https://goreportcard.com/badge/github.com/drewstinnett/gout)](https://goreportcard.com/report/github.com/drewstinnett/gout)
+[![Go Reference](https://pkg.go.dev/badge/github.com/drewstinnett/gout.svg)](https://pkg.go.dev/github.com/drewstinnett/gout)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
 *NOTE*: V2 is a breaking compatibility change from V1. Going forward, only V2 will
 be developed and supported.
+
+`gout` is the Go OUTput Formatter for serializing data in a standard way.
 
 Helper utility to output data structures in to standardized formats, much like
 what is built in to [vault](https://www.vaultproject.io/),
@@ -29,38 +31,38 @@ This tool is intended to provide all that in a single reusable package.
 Import with:
 
 ```go
-import "github.com/drewstinnett/go-output-format/v2/gout"
+import gout "github.com/drewstinnett/gout/v2"
 ```
 
 Example Usage:
 
 ```go
 import (
- "os"
- "github.com/drewstinnett/go-output-format/v2/gout"
- "github.com/drewstinnett/go-output-format/v2/formats/json"
+   "os"
+   gout "github.com/drewstinnett/gout/v2"
+   "github.com/drewstinnett/gout/v2/formats/json"
 )
 
 func main() {
- w, err := gout.New()
- if err != nil {
-  panic(err)
- }
- // By Default, the YAML format is use, Let's change it to json though
- w.SetFormatter(json.Formatter{})
+   w, err := gout.New()
+   if err != nil {
+    panic(err)
+   }
+   // By Default, the YAML format is use, Let's change it to json though
+   w.SetFormatter(json.Formatter{})
 
- // By Default, print to stdout. Let's change it to stderr though
- w.SetWriter(os.Stderr)
+   // By Default, print to stdout. Let's change it to stderr though
+   w.SetWriter(os.Stderr)
 
- // Print it on out!
- w.Print(struct {
-  FirstName string
-  LastName  string
- }{
-  FirstName: "Bob",
-  LastName:  "Ross",
- })
- // {"FirstName":"Bob","LastName":"Ross"}
+   // Print it on out!
+   w.MustPrint(struct {
+    FirstName string
+    LastName  string
+   }{
+    FirstName: "Bob",
+    LastName:  "Ross",
+   })
+   // {"FirstName":"Bob","LastName":"Ross"}
 }
 ```
 

@@ -29,12 +29,12 @@ func BindCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) error {
 	if config == nil {
 		config = NewCobraCmdConfig()
 	}
-	cmd.Flags().String(config.FormatField, config.Default, config.Help)
+	cmd.PersistentFlags().String(config.FormatField, config.Default, config.Help)
 	return nil
 }
 
-// NewClientWithCobraCmd creates a pointer to a new writer with options from a cobra.Command
-func NewWithCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) (*Client, error) {
+// NewWithCobraCmd creates a pointer to a new writer with options from a cobra.Command
+func NewWithCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) (*Gout, error) {
 	var err error
 	if config == nil {
 		config = NewCobraCmdConfig()
@@ -56,7 +56,7 @@ func NewWithCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) (*Client, error
 		return nil, fmt.Errorf("The flag '%v' is not available", config.FormatField)
 	}
 	// Default this writer to stdout
-	c := &Client{
+	c := &Gout{
 		Writer: os.Stdout,
 	}
 	if fr, ok := BuiltInFormatters[format]; ok {

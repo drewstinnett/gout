@@ -44,7 +44,7 @@ func TestBindCobraCmd(t *testing.T) {
 	err := BindCobraCmd(&cmd, nil)
 	require.NoError(t, err)
 
-	got, err := cmd.Flags().GetString("format")
+	got, err := cmd.PersistentFlags().GetString("format")
 	require.NoError(t, err)
 	require.Equal(t, "yaml", got)
 }
