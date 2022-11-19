@@ -29,7 +29,7 @@ func BindCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) error {
 	if config == nil {
 		config = NewCobraCmdConfig()
 	}
-	cmd.Flags().String(config.FormatField, config.Default, config.Help)
+	cmd.PersistentFlags().String(config.FormatField, config.Default, config.Help)
 	return nil
 }
 

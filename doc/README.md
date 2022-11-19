@@ -3,7 +3,7 @@
 # formatter
 
 ```go
-import "github.com/drewstinnett/go-output-format/formatter"
+import "github.com/drewstinnett/gout/formatter"
 ```
 
 ## Index

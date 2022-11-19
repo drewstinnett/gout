@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/drewstinnett/go-output-format/v2/formats/json"
-	"github.com/drewstinnett/go-output-format/v2/formats/plain"
+	"github.com/drewstinnett/gout/v2/formats/json"
+	"github.com/drewstinnett/gout/v2/formats/plain"
 	"github.com/stretchr/testify/require"
 )
 

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/drewstinnett/go-output-format/v2/gout"
+	"github.com/drewstinnett/gout/v2/gout"
 )
 
 type sample struct {
@@ -36,6 +36,4 @@ func main() {
 			fmt.Println()
 		}
 	}
-
-	// fmt.Println(string(b))
 }

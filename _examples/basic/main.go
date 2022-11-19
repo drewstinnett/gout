@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/drewstinnett/go-output-format/v2/formats/json"
-	"github.com/drewstinnett/go-output-format/v2/gout"
+	"github.com/drewstinnett/gout/v2/formats/json"
+	"github.com/drewstinnett/gout/v2/gout"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	w.SetWriter(os.Stderr)
 
 	// Print it on out!
-	w.Print(struct {
+	w.MustPrint(struct {
 		FirstName string
 		LastName  string
 	}{

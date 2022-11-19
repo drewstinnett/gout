@@ -7,7 +7,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/drewstinnett/go-output-format/v2/formats/yaml"
+	"github.com/drewstinnett/gout/v2/formats/yaml"
 )
 
 // Formatter interface that defines how a thing can be formatted for output
