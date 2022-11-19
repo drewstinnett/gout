@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
+	gout "github.com/drewstinnett/gout/v2"
 	"github.com/drewstinnett/gout/v2/formats/json"
-	"github.com/drewstinnett/gout/v2/gout"
 )
 
 func main() {

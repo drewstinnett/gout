@@ -31,7 +31,7 @@ This tool is intended to provide all that in a single reusable package.
 Import with:
 
 ```go
-import "github.com/drewstinnett/gout/v2/gout"
+import gout "github.com/drewstinnett/gout/v2"
 ```
 
 Example Usage:
@@ -39,7 +39,7 @@ Example Usage:
 ```go
 import (
    "os"
-   "github.com/drewstinnett/gout/v2/gout"
+   gout "github.com/drewstinnett/gout/v2"
    "github.com/drewstinnett/gout/v2/formats/json"
 )
 

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/drewstinnett/gout/v2/gout"
+	gout "github.com/drewstinnett/gout/v2"
 )
 
 type sample struct {

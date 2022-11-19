@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
+	gout "github.com/drewstinnett/gout/v2"
 	"github.com/drewstinnett/gout/v2/formats/gotemplate"
-	"github.com/drewstinnett/gout/v2/gout"
 )
 
 type sample struct {
