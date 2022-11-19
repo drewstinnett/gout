@@ -37,3 +37,14 @@ func TestNewWithCobraCmdMissingFormat(t *testing.T) {
 	require.EqualError(t, err, "The flag 'format' is not available")
 	require.Nil(t, c)
 }
+
+func TestBindCobraCmd(t *testing.T) {
+	cmd := cobra.Command{}
+
+	err := BindCobraCmd(&cmd, nil)
+	require.NoError(t, err)
+
+	got, err := cmd.Flags().GetString("format")
+	require.NoError(t, err)
+	require.Equal(t, "yaml", got)
+}
