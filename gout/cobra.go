@@ -11,15 +11,33 @@ import (
 // CobraCmdConfig defines what fields the formatting values are stored in
 type CobraCmdConfig struct {
 	FormatField string
+	Default     string
+	Help        string
+}
+
+// NewcobraCmdConfig generates a new CobraCmdConfig with some sane defaults
+func NewCobraCmdConfig() *CobraCmdConfig {
+	return &CobraCmdConfig{
+		FormatField: "format",
+		Default:     "yaml",
+		Help:        "Format to use for output",
+	}
+}
+
+// BindCobraCmd creates a new flag called 'format' that accepts the format.
+func BindCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) error {
+	if config == nil {
+		config = NewCobraCmdConfig()
+	}
+	cmd.Flags().String(config.FormatField, config.Default, config.Help)
+	return nil
 }
 
 // NewClientWithCobraCmd creates a pointer to a new writer with options from a cobra.Command
 func NewWithCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) (*Client, error) {
 	var err error
 	if config == nil {
-		config = &CobraCmdConfig{
-			FormatField: "format",
-		}
+		config = NewCobraCmdConfig()
 	}
 	var format string
 
