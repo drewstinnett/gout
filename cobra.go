@@ -3,6 +3,7 @@ package gout
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -10,17 +11,21 @@ import (
 
 // CobraCmdConfig defines what fields the formatting values are stored in
 type CobraCmdConfig struct {
-	FormatField string
-	Default     string
-	Help        string
+	FormatField     string
+	Default         string
+	DefaultTemplate string
+	Help            string
+	HelpTemplate    string
 }
 
 // NewcobraCmdConfig generates a new CobraCmdConfig with some sane defaults
 func NewCobraCmdConfig() *CobraCmdConfig {
 	return &CobraCmdConfig{
-		FormatField: "format",
-		Default:     "yaml",
-		Help:        "Format to use for output",
+		FormatField:     "format",
+		Default:         "yaml",
+		DefaultTemplate: "{{ . }}",
+		Help:            "Format to use for output",
+		HelpTemplate:    "Template to use when using the gotemplate format",
 	}
 }
 
@@ -29,7 +34,13 @@ func BindCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) error {
 	if config == nil {
 		config = NewCobraCmdConfig()
 	}
-	cmd.PersistentFlags().String(config.FormatField, config.Default, config.Help)
+	keys := make([]string, 0, len(BuiltInFormatters))
+	for k := range BuiltInFormatters {
+		keys = append(keys, k)
+	}
+	help := config.Help + " (" + strings.Join(keys, "|") + ")"
+	cmd.PersistentFlags().String(config.FormatField, config.Default, help)
+	cmd.PersistentFlags().String(config.FormatField+"-template", config.DefaultTemplate, config.HelpTemplate)
 	return nil
 }
 

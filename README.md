@@ -1,13 +1,10 @@
-# gout (Previously gout)
+# GOUT (Previously go-output-format)
 
 [![Test](https://github.com/drewstinnett/gout/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/drewstinnett/gout/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/drewstinnett/gout/branch/main/graph/badge.svg?token=KBITDOWZLQ)](https://codecov.io/gh/drewstinnett/gout)
 [![Go Report Card](https://goreportcard.com/badge/github.com/drewstinnett/gout)](https://goreportcard.com/report/github.com/drewstinnett/gout)
-[![Go Reference](https://pkg.go.dev/badge/github.com/drewstinnett/gout.svg)](https://pkg.go.dev/github.com/drewstinnett/gout)
+[![Go Reference](https://pkg.go.dev/badge/github.com/drewstinnett/gout.svg)](https://pkg.go.dev/github.com/drewstinnett/gout/v2)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
-
-*NOTE*: V2 is a breaking compatibility change from V1. Going forward, only V2 will
-be developed and supported.
 
 `gout` is the Go OUTput Formatter for serializing data in a standard way.
 
