@@ -20,7 +20,8 @@ func TestNewWithCobraCmdFlag(t *testing.T) {
 func TestNewWithCobraCmdPersistentFlag(t *testing.T) {
 	cmd := cobra.Command{}
 	cmd.PersistentFlags().String("format", "yaml", "The format")
-	cmd.Execute()
+	err := cmd.Execute()
+	require.NoError(t, err)
 	c, err := NewWithCobraCmd(&cmd, nil)
 	require.NoError(t, err)
 	require.NotNil(t, c)
@@ -30,7 +31,8 @@ func TestNewWithCobraCmdPersistentFlagTemplate(t *testing.T) {
 	cmd := cobra.Command{}
 	cmd.PersistentFlags().String("format", "gotemplate", "The format")
 	cmd.PersistentFlags().String("format-template", "{{ . }}", "The format template")
-	cmd.Execute()
+	err := cmd.Execute()
+	require.NoError(t, err)
 	c, err := NewWithCobraCmd(&cmd, nil)
 	require.NoError(t, err)
 	require.NotNil(t, c)
@@ -39,7 +41,8 @@ func TestNewWithCobraCmdPersistentFlagTemplate(t *testing.T) {
 func TestNewWithCobraCmdBadFormat(t *testing.T) {
 	cmd := cobra.Command{}
 	cmd.PersistentFlags().String("format", "not-exist", "The format")
-	cmd.Execute()
+	err := cmd.Execute()
+	require.NoError(t, err)
 	c, err := NewWithCobraCmd(&cmd, nil)
 	require.EqualError(t, err, "Could not find the format not-exist")
 	require.Nil(t, c)
