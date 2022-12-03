@@ -23,44 +23,51 @@ This tool is intended to provide all that in a single reusable package.
 
 ## Usage
 
-### Basic
-
-Import with:
-
 ```go
-import gout "github.com/drewstinnett/gout/v2"
+import "github.com/drewstinnett/gout/v2"
 ```
+
+### Builtin
+
+Gout now comes with a builtin instance, similar to the way Viper does things.
 
 Example Usage:
 
 ```go
-import (
-   "os"
-   gout "github.com/drewstinnett/gout/v2"
-   "github.com/drewstinnett/gout/v2/formats/json"
-)
+gout.MustPrint(struct {
+  FirstName string
+  LastName  string
+}{
+  FirstName: "Bob",
+  LastName:  "Ross",
+})
+```
 
-func main() {
-   w, err := gout.New()
-   if err != nil {
-    panic(err)
-   }
-   // By Default, the YAML format is use, Let's change it to json though
-   w.SetFormatter(json.Formatter{})
+Full example code [here](./_examples/builtin/main.go)
 
-   // By Default, print to stdout. Let's change it to stderr though
-   w.SetWriter(os.Stderr)
+### Custom
 
-   // Print it on out!
-   w.MustPrint(struct {
-    FirstName string
-    LastName  string
-   }{
-    FirstName: "Bob",
-    LastName:  "Ross",
-   })
-   // {"FirstName":"Bob","LastName":"Ross"}
+Example Usage:
+
+```go
+// Create a new instance
+w, err := gout.New()
+if err != nil {
+  panic(err)
 }
+
+// Use a custom writer
+w.SetWriter(os.Stderr)
+
+// Print something!
+w.MustPrint(struct {
+  FirstName string
+  LastName  string
+}{
+  FirstName: "Bob",
+  LastName:  "Ross",
+})
+// {"FirstName":"Bob","LastName":"Ross"}
 ```
 
 ### Cobra Integration

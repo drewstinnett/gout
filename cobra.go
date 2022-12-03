@@ -5,8 +5,10 @@ import (
 	"os"
 	"strings"
 
+	"github.com/drewstinnett/gout/v2/config"
+	"github.com/drewstinnett/gout/v2/formats/gotemplate"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
 )
 
 // CobraCmdConfig defines what fields the formatting values are stored in
@@ -45,35 +47,40 @@ func BindCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) error {
 }
 
 // NewWithCobraCmd creates a pointer to a new writer with options from a cobra.Command
-func NewWithCobraCmd(cmd *cobra.Command, config *CobraCmdConfig) (*Gout, error) {
+func NewWithCobraCmd(cmd *cobra.Command, conf *CobraCmdConfig) (*Gout, error) {
 	var err error
-	if config == nil {
-		config = NewCobraCmdConfig()
+	if conf == nil {
+		conf = NewCobraCmdConfig()
 	}
 	var format string
 
-	// Check all the flags for a matching format
-	for _, fs := range []pflag.FlagSet{
-		*cmd.Flags(),
-		*cmd.PersistentFlags(),
-	} {
-		format, err = fs.GetString(config.FormatField)
-		if err == nil {
-			break
-		}
-	}
-	// If still not found, error
+	format, err = cmd.Flags().GetString(conf.FormatField)
 	if err != nil {
-		return nil, fmt.Errorf("The flag '%v' is not available", config.FormatField)
+		return nil, err
 	}
+
 	// Default this writer to stdout
 	c := &Gout{
 		Writer: os.Stdout,
 	}
-	if fr, ok := BuiltInFormatters[format]; ok {
-		c.SetFormatter(fr)
+
+	if format == "gotemplate" {
+		t, err := cmd.PersistentFlags().GetString(conf.FormatField + "-template")
+		if err != nil {
+			log.Warn().Err(err).Msg("Error looking up template, using the default instead")
+		}
+		c.SetFormatter(gotemplate.Formatter{
+			Opts: config.FormatterOpts{
+				"template": t,
+			},
+			// Template: t,
+		})
 	} else {
-		return nil, fmt.Errorf("Could not find the format %v", format)
+		if fr, ok := BuiltInFormatters[format]; ok {
+			c.SetFormatter(fr)
+		} else {
+			return nil, fmt.Errorf("Could not find the format %v", format)
+		}
 	}
 	return c, nil
 }

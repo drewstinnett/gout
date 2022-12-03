@@ -22,13 +22,11 @@ func main() {
 		sample{FirstName: "Michael", LastName: "Myers", Age: 13},
 	}
 	c, _ := gout.New()
-	c.SetFormatter(gotemplate.Formatter{})
-	fmt.Printf("# Format: gotemplate\n")
-	fmt.Println("## People")
-	c.MustPrint(gotemplate.FormatterOpts{
-		Var:      people,
+	c.SetFormatter(gotemplate.Formatter{
 		Template: "{{ range . }}{{ .FirstName }} {{ .LastName }} is {{ .Age }} years old\n{{ end }}",
 	})
+	fmt.Printf("# Format: gotemplate\n## People\n")
+	c.MustPrint(people)
 	fmt.Println()
 
 	// fmt.Println(string(b))

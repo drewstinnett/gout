@@ -2,6 +2,7 @@ package gout
 
 import (
 	"bytes"
+	"os"
 	"strings"
 	"testing"
 
@@ -16,7 +17,7 @@ func TestNewWriter(t *testing.T) {
 	require.NotNil(t, c)
 }
 
-func TestWriterPrinter(t *testing.T) {
+func TestSetGoutWriter(t *testing.T) {
 	c, err := New()
 	require.NoError(t, err)
 	var buf bytes.Buffer
@@ -29,6 +30,24 @@ func TestWriterPrinter(t *testing.T) {
 	require.IsType(t, plain.Formatter{}, c.Formatter)
 }
 
+func TestNewGoutWithWriter(t *testing.T) {
+	var b bytes.Buffer
+	c, err := New(WithWriter(&b))
+	require.NoError(t, err)
+	require.NotNil(t, c)
+	c.Print(struct{ Foo string }{Foo: "bar"})
+	require.Equal(t, "foo: bar\n", b.String())
+}
+
+func TestNewGoutWithFormatter(t *testing.T) {
+	var b bytes.Buffer
+	c, err := New(WithWriter(&b), WithFormatter(plain.Formatter{}))
+	require.NoError(t, err)
+	require.NotNil(t, c)
+	c.Print(struct{ Foo string }{Foo: "bar"})
+	require.Equal(t, "{Foo:bar}\n", b.String())
+}
+
 func TestPrintError(t *testing.T) {
 	c, err := New()
 	require.NoError(t, err)
@@ -38,6 +57,24 @@ func TestPrintError(t *testing.T) {
 	unprintable := make(chan int)
 	require.Panics(t, func() { c.MustPrint(unprintable) })
 	require.Panics(t, func() { c.MustPrintMulti(unprintable) })
+}
+
+func TestBuiltinGout(t *testing.T) {
+	require.NotPanics(t, func() { MustPrint("foo") })
+
+	require.NotPanics(t, func() { SetWriter(os.Stderr) })
+	require.NotPanics(t, func() { SetFormatter(json.Formatter{}) })
+
+	err := Print("foo")
+	require.NoError(t, err)
+
+	err = PrintMulti("foo", "bar")
+	require.NoError(t, err)
+
+	require.NotPanics(t, func() { MustPrintMulti("foo", "bar") })
+
+	got := GetGout()
+	require.NotNil(t, got)
 }
 
 func TestWriterPrinterMulti(t *testing.T) {
