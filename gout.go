@@ -2,7 +2,6 @@ package gout
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"io"
 	"os"
@@ -14,7 +13,7 @@ import (
 type Formatter interface {
 	Format(interface{}) ([]byte, error)
 	// FormatWithOpts(interface{}, config.FormatterOpts) ([]byte, error)
-	FormatWithContext(context.Context, interface{}) ([]byte, error)
+	// FormatWithContext(context.Context, interface{}) ([]byte, error)
 }
 
 // FormatterOpts is an arbitrary configuration map to interface. Pass useful
@@ -30,18 +29,37 @@ type Gout struct {
 	Writer io.Writer
 }
 
+// Use this for doing things without explicitely creating a new gout, similar to
+// viper.Viper
+var gi *Gout
+
+func init() {
+	gi = MustNew()
+}
+
+// GetGout gets the default Gout instance
+func GetGout() *Gout {
+	return gi
+}
+
 // SetWriter set the io.Writer that will be used for printing. By default, this
 // will be os.Stdout
+func SetWriter(i io.Writer) { gi.SetWriter(i) }
+
 func (g *Gout) SetWriter(i io.Writer) {
 	g.Writer = i
 }
 
 // SetFormatter sets the Formatter to use for the text.
+func SetFormatter(f Formatter) { gi.SetFormatter(f) }
+
 func (g *Gout) SetFormatter(f Formatter) {
 	g.Formatter = f
 }
 
 // Print print an interface using the given Formatter and io.Writer
+func Print(v interface{}) (err error) { return gi.Print(v) }
+
 func (g *Gout) Print(v interface{}) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -59,6 +77,8 @@ func (g *Gout) Print(v interface{}) (err error) {
 
 // PrintMulti useful when wanting to print multiple interfaces to a single
 // serialized item
+func PrintMulti(v ...interface{}) (err error) { return gi.PrintMulti(v) }
+
 func (g *Gout) PrintMulti(v ...interface{}) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -76,6 +96,8 @@ func (g *Gout) PrintMulti(v ...interface{}) (err error) {
 }
 
 // MustPrint print an interface and panic if there is any sort of error
+func MustPrint(v interface{}) { gi.MustPrint(v) }
+
 func (g *Gout) MustPrint(v interface{}) {
 	err := g.Print(v)
 	if err != nil {
@@ -85,6 +107,8 @@ func (g *Gout) MustPrint(v interface{}) {
 
 // MustPrintMulti print an multiple interfaces and panic if there is any sort of
 // error
+func MustPrintMulti(v ...interface{}) { gi.MustPrintMulti(v) }
+
 func (g *Gout) MustPrintMulti(v ...interface{}) {
 	err := g.PrintMulti(v)
 	if err != nil {
@@ -92,13 +116,46 @@ func (g *Gout) MustPrintMulti(v ...interface{}) {
 	}
 }
 
+// Option is an option that can be passed in to help configure a Gout instance
+type Option func(*Gout)
+
+// WithWriter can be passed to New(), specifying which writer should be used for
+// output
+func WithWriter(w io.Writer) Option {
+	return func(g *Gout) {
+		g.Writer = w
+	}
+}
+
+// WithFormatter can be passed to New(), specifying which Formatter should be
+// used for output
+func WithFormatter(f Formatter) Option {
+	return func(g *Gout) {
+		g.Formatter = f
+	}
+}
+
 // New creates a pointer to a new Gout, with some sensible defaults
-func New() (*Gout, error) {
+func New(opts ...Option) (*Gout, error) {
+	defaultFormatter := yaml.Formatter{}
+	defaultWriter := os.Stdout
 	g := &Gout{
-		Formatter: yaml.Formatter{},
-		Writer:    os.Stdout,
+		Formatter: defaultFormatter,
+		Writer:    defaultWriter,
+	}
+
+	for _, opt := range opts {
+		opt(g)
 	}
 	return g, nil
+}
+
+func MustNew(opts ...Option) *Gout {
+	g, err := New(opts...)
+	if err != nil {
+		panic(err)
+	}
+	return g
 }
 
 func (g *Gout) itemizedFormatter(v ...interface{}) ([]byte, error) {

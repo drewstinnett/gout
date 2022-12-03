@@ -1,7 +1,6 @@
 package gotemplate
 
 import (
-	"context"
 	"testing"
 
 	"github.com/drewstinnett/gout/v2/config"
@@ -24,7 +23,6 @@ func TestGTOFormatterFormat(t *testing.T) {
 }
 
 func TestGTOFormatter(t *testing.T) {
-	f := Formatter{}
 	v := struct {
 		Title string
 		Year  int
@@ -32,17 +30,18 @@ func TestGTOFormatter(t *testing.T) {
 		Title: "Ghostbusters",
 		Year:  1985,
 	}
-	opts := config.FormatterOpts{
-		"template": "{{ .Title }}",
+	f := Formatter{
+		Opts: map[string]interface{}{
+			"template": "{{ .Title }}",
+		},
 	}
-	got, err := f.formatWithOpts(v, opts)
+	got, err := f.Format(v)
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "Ghostbusters", string(got))
 }
 
 func TestGTOFormatterTemplateError(t *testing.T) {
-	f := Formatter{}
 	v := struct {
 		Title string
 		Year  int
@@ -50,16 +49,17 @@ func TestGTOFormatterTemplateError(t *testing.T) {
 		Title: "Ghostbusters",
 		Year:  1985,
 	}
-	opts := config.FormatterOpts{
-		"template": "{{ .NotExistingField }}",
+	f := Formatter{
+		Opts: map[string]interface{}{
+			"template": "{{ .NotExistingField }}",
+		},
 	}
-	got, err := f.formatWithOpts(v, opts)
+	got, err := f.Format(v)
 	require.Error(t, err)
 	require.Nil(t, got)
 }
 
 func TestGTOFormatterMultiVal(t *testing.T) {
-	f := Formatter{}
 	v := []struct {
 		Title string
 		Year  int
@@ -73,17 +73,18 @@ func TestGTOFormatterMultiVal(t *testing.T) {
 			Year:  1978,
 		},
 	}
-	opts := config.FormatterOpts{
-		"template": "{{ range . }}{{ .Title }}\n{{ end }}",
+	f := Formatter{
+		Opts: map[string]interface{}{
+			"template": "{{ range . }}{{ .Title }}\n{{ end }}",
+		},
 	}
-	got, err := f.formatWithOpts(v, opts)
+	got, err := f.Format(v)
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "Ghostbusters\nHalloween\n", string(got))
 }
 
 func TestGTOWithOptsFormatter(t *testing.T) {
-	f := Formatter{}
 	v := struct {
 		Title string
 		Year  int
@@ -91,17 +92,22 @@ func TestGTOWithOptsFormatter(t *testing.T) {
 		Title: "Ghostbusters",
 		Year:  1985,
 	}
-	opts := config.FormatterOpts{
-		"template": "{{ .Title }}",
+	f := Formatter{
+		Opts: config.FormatterOpts{
+			"template": "{{ .Title }}",
+		},
 	}
-	got, err := f.formatWithOpts(v, opts)
+	got, err := f.Format(v)
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "Ghostbusters", string(got))
 }
 
+/*
 func TestGTOWithOptsFormatterMissingTemplate(t *testing.T) {
-	f := Formatter{}
+	f := Formatter{
+		Template: "",
+	}
 	v := struct {
 		Title string
 		Year  int
@@ -110,14 +116,13 @@ func TestGTOWithOptsFormatterMissingTemplate(t *testing.T) {
 		Year:  1985,
 	}
 	// No 'template' option
-	opts := config.FormatterOpts{}
-	got, err := f.formatWithOpts(v, opts)
+	got, err := f.Format(v)
 	require.Error(t, err)
 	require.Nil(t, got)
 }
+*/
 
 func TestFormatWithContext(t *testing.T) {
-	f := Formatter{}
 	v := struct {
 		Title string
 		Year  int
@@ -125,8 +130,12 @@ func TestFormatWithContext(t *testing.T) {
 		Title: "Ghostbusters",
 		Year:  1985,
 	}
-	ctx := context.WithValue(context.Background(), TemplateField{}, "{{ .Title }}")
-	got, err := f.FormatWithContext(ctx, v)
+	f := Formatter{
+		Opts: config.FormatterOpts{
+			"template": "{{ .Title }}",
+		},
+	}
+	got, err := f.Format(v)
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "Ghostbusters", string(got))

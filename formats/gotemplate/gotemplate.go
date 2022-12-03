@@ -2,7 +2,6 @@ package gotemplate
 
 import (
 	"bytes"
-	"context"
 	"errors"
 	"text/template"
 
@@ -10,33 +9,33 @@ import (
 )
 
 type Formatter struct {
-	ctx context.Context
+	// Template string
+	Opts config.FormatterOpts
 }
 
-type TemplateField struct{}
-
+// type TemplateField struct{}
 func (w Formatter) Format(v interface{}) ([]byte, error) {
-	var t any
-	if w.ctx != nil {
-		t = w.ctx.Value(TemplateField{})
+	var tp string
+	if t, ok := w.Opts["template"]; !ok {
+		tp = `{{ printf "%+v" . }}`
+	} else {
+		if tp, ok = t.(string); !ok {
+			return nil, errors.New("Found a template option, but it's not a string")
+		}
 	}
-	if t == nil {
-		t = `{{ printf "%+v" . }}`
+	var doc bytes.Buffer
+	tmpl, err := template.New("item").Parse(tp)
+	if err != nil {
+		return nil, err
 	}
-	return w.formatWithOpts(v, config.FormatterOpts{
-		"template": t,
-	})
+	err = tmpl.Execute(&doc, v)
+	if err != nil {
+		return nil, err
+	}
+	return doc.Bytes(), nil
 }
 
-func (w Formatter) FormatWithContext(ctx context.Context, v interface{}) ([]byte, error) {
-	return w.withContext(ctx).Format(v)
-}
-
-func (w *Formatter) withContext(ctx context.Context) *Formatter {
-	w.ctx = ctx
-	return w
-}
-
+/*
 func (w Formatter) formatWithOpts(v interface{}, o config.FormatterOpts) ([]byte, error) {
 	if _, ok := o["template"]; !ok {
 		return nil, errors.New("Must pass 'template' in to options")
@@ -54,3 +53,4 @@ func (w Formatter) formatWithOpts(v interface{}, o config.FormatterOpts) ([]byte
 	}
 	return doc.Bytes(), nil
 }
+*/
