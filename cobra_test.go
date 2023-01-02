@@ -58,10 +58,37 @@ func TestNewWithCobraCmdMissingFormat(t *testing.T) {
 func TestBindCobraCmd(t *testing.T) {
 	cmd := cobra.Command{}
 
-	err := BindCobraCmd(&cmd, nil)
+	err := BindCobra(&cmd, nil)
+	require.NoError(t, err)
+	err = cmd.Execute()
 	require.NoError(t, err)
 
-	got, err := cmd.PersistentFlags().GetString("format")
+	got, err := cmd.Flags().GetString("format")
 	require.NoError(t, err)
 	require.Equal(t, "yaml", got)
+}
+
+func TestWithCobra(t *testing.T) {
+	cmd := cobra.Command{}
+	cmd.PersistentFlags().String("format", "yaml", "The format")
+	err := cmd.Execute()
+	require.NoError(t, err)
+
+	err = WithCobra(&cmd, nil)
+	require.NoError(t, err)
+}
+
+func TestCobraConfig(t *testing.T) {
+	cc := NewCobraConfig(
+		WithCobraFormatField("funky"),
+		WithCobraFormatDefault("toml"),
+		WithCobraFormatHelp("format-helper-stuff"),
+		WithCobraTemplateDefault("foo-template-default"),
+		WithCobraTemplateHelp("foo-template-help"),
+	)
+	require.Equal(t, "funky", cc.FormatField)
+	require.Equal(t, "toml", cc.FormatDefault)
+	require.Equal(t, "format-helper-stuff", cc.FormatHelp)
+	require.Equal(t, "foo-template-default", cc.TemplateDefault)
+	require.Equal(t, "foo-template-help", cc.TemplateHelp)
 }
