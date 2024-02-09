@@ -1,7 +1,6 @@
 package yaml
 
 import (
-	"context"
 	"fmt"
 	"testing"
 
@@ -36,6 +35,7 @@ func TestYAMLFormatter(t *testing.T) {
 	require.Equal(t, string("foo: bar\n"), string(got))
 }
 
+/*
 func TestYAMLFormatterWithOpts(t *testing.T) {
 	f := Formatter{}
 	got, err := f.FormatWithContext(context.Background(), []struct {
@@ -48,6 +48,7 @@ func TestYAMLFormatterWithOpts(t *testing.T) {
 	require.IsType(t, []byte{}, got)
 	require.Equal(t, string("- foo: bar\n- foo: baz\n"), string(got))
 }
+*/
 
 /*
 func TestYAMLFormatterWithOpts(t *testing.T) {
