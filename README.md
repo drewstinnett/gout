@@ -126,7 +126,11 @@ data out in a more arbitrary format. This uses the `text/template` package to
 parse each item in the return slice. See [the example
 here](_examples/gotemplate/main.go) for full details.
 
-## Coming Soon/TODO
+## Related Projects
+
+* [Gout-Cobra](https://github.com/drewstinnett/gout-cobra) - Configure a cobra.Command to output using Gout
+
+## Coming Soon?
 
 ### TSV (Tab Separated Values)
 
