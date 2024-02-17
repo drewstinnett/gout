@@ -1,6 +1,8 @@
 package formats
 
-import "sort"
+import (
+	"sort"
+)
 
 type Creator func() Formatter
 

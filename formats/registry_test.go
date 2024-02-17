@@ -11,7 +11,7 @@ import (
 func TestBuiltinRegistry(t *testing.T) {
 	require.Equal(
 		t,
-		[]string{"gotemplate", "json", "yaml"},
+		[]string{"gotemplate", "json", "plain", "xml", "yaml"},
 		formats.Names(),
 	)
 }

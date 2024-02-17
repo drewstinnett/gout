@@ -7,6 +7,8 @@ import (
 	"os"
 
 	"github.com/drewstinnett/gout/v2/formats"
+	// Include all the builtin formats by default
+	_ "github.com/drewstinnett/gout/v2/formats/builtin"
 	"github.com/drewstinnett/gout/v2/formats/yaml"
 )
 
