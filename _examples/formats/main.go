@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	gout "github.com/drewstinnett/gout/v2"
+	"github.com/drewstinnett/gout/v2/formats"
 )
 
 type sample struct {
@@ -21,19 +22,17 @@ func main() {
 		sample{FirstName: "Freddy", LastName: "Krueger", Age: 35},
 		sample{FirstName: "Michael", LastName: "Myers", Age: 13},
 	}
-	c, _ := gout.New()
-	for formatN, formatF := range gout.BuiltInFormatters {
-		if formatN != "gotemplate" {
-			fmt.Printf("# Format: %v\n", formatN)
-			c.SetFormatter(formatF)
-			// CSV Formatter won't work on a single object, has to be iterable
-			if formatN != "csv" {
-				fmt.Println("## Person")
-				c.MustPrint(person)
-			}
-			fmt.Println("## People")
-			c.MustPrint(people)
-			fmt.Println()
+	g := gout.New()
+	for formatN, formatG := range formats.Formats {
+		fmt.Printf("# Format: %v\n", formatN)
+		g.SetFormatter(formatG())
+		// CSV Formatter won't work on a single object, has to be iterable
+		if formatN != "csv" {
+			fmt.Println("## Person")
+			g.MustPrint(person)
 		}
+		fmt.Println("## People")
+		g.MustPrint(people)
+		fmt.Println()
 	}
 }
