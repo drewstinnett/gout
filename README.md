@@ -70,27 +70,6 @@ w.MustPrint(struct {
 // {"FirstName":"Bob","LastName":"Ross"}
 ```
 
-### Cobra Integration
-
-To simplify using this in new projects, you can use the `NewWithCobraCmd`
-method. Example:
-
-```go
-// By default, look for a field called 'format'
-w, err := NewWithCobraCmd(cmd, nil)
-```
-
-```go
-// Or pass a configuration object with what the field is called
-w, err := NewWithCobraCmd(cmd, &gout.CobraCmdConfig{
-        FormatField: "my-special-name-field",
-})
-```
-
-By default, the gout will use os.Stdout as the default writer.
-
-See [_examples](_examples/) for more example usage
-
 ## Built-in Formatters
 
 ### YAML

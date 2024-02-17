@@ -1,19 +1,19 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	gout "github.com/drewstinnett/gout/v2"
-	"github.com/drewstinnett/gout/v2/formats/json"
+	"github.com/drewstinnett/gout/v2/formats"
+	_ "github.com/drewstinnett/gout/v2/formats/builtin"
 )
 
 func main() {
-	w, err := gout.New()
-	if err != nil {
-		panic(err)
-	}
+	w := gout.New()
+	fmt.Printf("Active Formatters: %v\n", formats.Names())
 	// By Default, the YAML format is use, Let's change it to json though
-	w.SetFormatter(json.Formatter{})
+	// w.SetFormatter(json.Formatter{})
 
 	// By Default, print to stdout. Let's change it to stderr though
 	w.SetWriter(os.Stderr)

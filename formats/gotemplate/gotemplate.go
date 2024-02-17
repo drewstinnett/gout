@@ -6,6 +6,7 @@ import (
 	"text/template"
 
 	"github.com/drewstinnett/gout/v2/config"
+	"github.com/drewstinnett/gout/v2/formats"
 )
 
 type Formatter struct {
@@ -35,22 +36,8 @@ func (w Formatter) Format(v interface{}) ([]byte, error) {
 	return doc.Bytes(), nil
 }
 
-/*
-func (w Formatter) formatWithOpts(v interface{}, o config.FormatterOpts) ([]byte, error) {
-	if _, ok := o["template"]; !ok {
-		return nil, errors.New("Must pass 'template' in to options")
-	}
-
-	tpl := o["template"].(string)
-	var doc bytes.Buffer
-	tmpl, err := template.New("item").Parse(tpl)
-	if err != nil {
-		return nil, err
-	}
-	err = tmpl.Execute(&doc, v)
-	if err != nil {
-		return nil, err
-	}
-	return doc.Bytes(), nil
+func init() {
+	formats.Add("gotemplate", func() formats.Formatter {
+		return &Formatter{}
+	})
 }
-*/

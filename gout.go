@@ -6,27 +6,17 @@ import (
 	"io"
 	"os"
 
+	"github.com/drewstinnett/gout/v2/formats"
+	// Include all the builtin formats by default
+	_ "github.com/drewstinnett/gout/v2/formats/builtin"
 	"github.com/drewstinnett/gout/v2/formats/yaml"
 )
-
-// Formatter interface that defines how a thing can be formatted for output
-type Formatter interface {
-	Format(interface{}) ([]byte, error)
-	// FormatWithOpts(interface{}, config.FormatterOpts) ([]byte, error)
-	// FormatWithContext(context.Context, interface{}) ([]byte, error)
-}
-
-// FormatterOpts is an arbitrary configuration map to interface. Pass useful
-// format specific options in here
-type FormatterOpts map[string]interface{}
 
 // Gout is a structure you can use that contains a formatter, and a target
 // io.Writer
 type Gout struct {
-	// The format!
-	Formatter Formatter
-	// Target io.Writer output
-	Writer io.Writer
+	formatter formats.Formatter
+	writer    io.Writer
 }
 
 // Use this for doing things without explicitely creating a new gout, similar to
@@ -34,11 +24,11 @@ type Gout struct {
 var gi *Gout
 
 func init() {
-	gi = MustNew()
+	gi = New()
 }
 
-// GetGout gets the default Gout instance
-func GetGout() *Gout {
+// Get gets the default Gout instance
+func Get() *Gout {
 	return gi
 }
 
@@ -47,14 +37,14 @@ func GetGout() *Gout {
 func SetWriter(i io.Writer) { gi.SetWriter(i) }
 
 func (g *Gout) SetWriter(i io.Writer) {
-	g.Writer = i
+	g.writer = i
 }
 
 // SetFormatter sets the Formatter to use for the text.
-func SetFormatter(f Formatter) { gi.SetFormatter(f) }
+func SetFormatter(f formats.Formatter) { gi.SetFormatter(f) }
 
-func (g *Gout) SetFormatter(f Formatter) {
-	g.Formatter = f
+func (g *Gout) SetFormatter(f formats.Formatter) {
+	g.formatter = f
 }
 
 // Print print an interface using the given Formatter and io.Writer
@@ -71,7 +61,7 @@ func (g *Gout) Print(v interface{}) (err error) {
 	if err != nil {
 		return err
 	}
-	fmt.Fprint(g.Writer, string(b))
+	fmt.Fprint(g.writer, string(b))
 	return err
 }
 
@@ -91,7 +81,7 @@ func (g *Gout) PrintMulti(v ...interface{}) (err error) {
 	if err != nil {
 		return err
 	}
-	fmt.Fprint(g.Writer, string(b))
+	fmt.Fprint(g.writer, string(b))
 	return err
 }
 
@@ -123,37 +113,27 @@ type Option func(*Gout)
 // output
 func WithWriter(w io.Writer) Option {
 	return func(g *Gout) {
-		g.Writer = w
+		g.writer = w
 	}
 }
 
 // WithFormatter can be passed to New(), specifying which Formatter should be
 // used for output
-func WithFormatter(f Formatter) Option {
+func WithFormatter(f formats.Formatter) Option {
 	return func(g *Gout) {
-		g.Formatter = f
+		g.formatter = f
 	}
 }
 
 // New creates a pointer to a new Gout, with some sensible defaults
-func New(opts ...Option) (*Gout, error) {
-	defaultFormatter := yaml.Formatter{}
-	defaultWriter := os.Stdout
+func New(opts ...Option) *Gout {
 	g := &Gout{
-		Formatter: defaultFormatter,
-		Writer:    defaultWriter,
+		formatter: yaml.Formatter{},
+		writer:    os.Stdout,
 	}
 
 	for _, opt := range opts {
 		opt(g)
-	}
-	return g, nil
-}
-
-func MustNew(opts ...Option) *Gout {
-	g, err := New(opts...)
-	if err != nil {
-		panic(err)
 	}
 	return g
 }
@@ -161,7 +141,7 @@ func MustNew(opts ...Option) *Gout {
 func (g *Gout) itemizedFormatter(v ...interface{}) ([]byte, error) {
 	var buf bytes.Buffer
 	for _, item := range v {
-		bi, err := g.Formatter.Format(item)
+		bi, err := g.formatter.Format(item)
 		if err != nil {
 			return nil, err
 		}

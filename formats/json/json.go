@@ -3,6 +3,8 @@ package json
 import (
 	"context"
 	ujson "encoding/json"
+
+	"github.com/drewstinnett/gout/v2/formats"
 )
 
 type Formatter struct {
@@ -29,4 +31,10 @@ func (w Formatter) FormatWithContext(ctx context.Context, v interface{}) ([]byte
 func (w *Formatter) withContext(ctx context.Context) *Formatter {
 	w.ctx = ctx
 	return w
+}
+
+func init() {
+	formats.Add("json", func() formats.Formatter {
+		return &Formatter{}
+	})
 }
