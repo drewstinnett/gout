@@ -3,23 +3,36 @@ package gotemplate
 import (
 	"testing"
 
-	"github.com/drewstinnett/gout/v2/config"
 	"github.com/stretchr/testify/require"
 )
 
 func TestGTOFormatterFormat(t *testing.T) {
-	f := Formatter{}
-	v := struct {
+	f := Formatter{
+		Template: `{{ printf "%+v" . }}`,
+	}
+	got, err := f.Format(struct {
 		Title string
 		Year  int
 	}{
 		Title: "Ghostbusters",
 		Year:  1985,
-	}
-	got, err := f.Format(v)
+	})
 	require.NoError(t, err)
 	require.NotNil(t, got)
 	require.Equal(t, "{Title:Ghostbusters Year:1985}", string(got))
+}
+
+func TestEmptyTemplate(t *testing.T) {
+	f := Formatter{}
+	got, err := f.Format(struct {
+		Title string
+		Year  int
+	}{
+		Title: "Ghostbusters",
+		Year:  1985,
+	})
+	require.EqualError(t, err, "foo")
+	require.Nil(t, got)
 }
 
 func TestGTOFormatter(t *testing.T) {
@@ -31,9 +44,7 @@ func TestGTOFormatter(t *testing.T) {
 		Year:  1985,
 	}
 	f := Formatter{
-		Opts: map[string]interface{}{
-			"template": "{{ .Title }}",
-		},
+		Template: "{{ .Title }}",
 	}
 	got, err := f.Format(v)
 	require.NoError(t, err)
@@ -50,9 +61,7 @@ func TestGTOFormatterTemplateError(t *testing.T) {
 		Year:  1985,
 	}
 	f := Formatter{
-		Opts: map[string]interface{}{
-			"template": "{{ .NotExistingField }}",
-		},
+		Template: "{{ .NotExistingField }}",
 	}
 	got, err := f.Format(v)
 	require.Error(t, err)
@@ -74,9 +83,7 @@ func TestGTOFormatterMultiVal(t *testing.T) {
 		},
 	}
 	f := Formatter{
-		Opts: map[string]interface{}{
-			"template": "{{ range . }}{{ .Title }}\n{{ end }}",
-		},
+		Template: "{{ range . }}{{ .Title }}\n{{ end }}",
 	}
 	got, err := f.Format(v)
 	require.NoError(t, err)
@@ -93,9 +100,7 @@ func TestGTOWithOptsFormatter(t *testing.T) {
 		Year:  1985,
 	}
 	f := Formatter{
-		Opts: config.FormatterOpts{
-			"template": "{{ .Title }}",
-		},
+		Template: "{{ .Title }}",
 	}
 	got, err := f.Format(v)
 	require.NoError(t, err)
@@ -131,9 +136,7 @@ func TestFormatWithContext(t *testing.T) {
 		Year:  1985,
 	}
 	f := Formatter{
-		Opts: config.FormatterOpts{
-			"template": "{{ .Title }}",
-		},
+		Template: "{{ .Title }}",
 	}
 	got, err := f.Format(v)
 	require.NoError(t, err)

@@ -15,7 +15,7 @@ func Add(name string, creator Creator) {
 
 // Names returns a slice of the names of the formatters
 func Names() []string {
-	ret := []string{}
+	ret := make([]string, 0, len(Formats))
 	for k := range Formats {
 		ret = append(ret, k)
 	}

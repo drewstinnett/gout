@@ -5,27 +5,21 @@ import (
 	"errors"
 	"text/template"
 
-	"github.com/drewstinnett/gout/v2/config"
 	"github.com/drewstinnett/gout/v2/formats"
 )
 
 type Formatter struct {
-	// Template string
-	Opts config.FormatterOpts
+	Template string
+	// Opts config.FormatterOpts
 }
 
 // type TemplateField struct{}
 func (w Formatter) Format(v interface{}) ([]byte, error) {
-	var tp string
-	if t, ok := w.Opts["template"]; !ok {
-		tp = `{{ printf "%+v" . }}`
-	} else {
-		if tp, ok = t.(string); !ok {
-			return nil, errors.New("Found a template option, but it's not a string")
-		}
+	if w.Template == "" {
+		return nil, errors.New("no Template set for gotemplate")
 	}
 	var doc bytes.Buffer
-	tmpl, err := template.New("item").Parse(tp)
+	tmpl, err := template.New("item").Parse(w.Template)
 	if err != nil {
 		return nil, err
 	}
@@ -38,6 +32,8 @@ func (w Formatter) Format(v interface{}) ([]byte, error) {
 
 func init() {
 	formats.Add("gotemplate", func() formats.Formatter {
-		return &Formatter{}
+		return &Formatter{
+			Template: `{{ printf "%+v" . }}`,
+		}
 	})
 }
