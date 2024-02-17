@@ -31,7 +31,7 @@ func TestEmptyTemplate(t *testing.T) {
 		Title: "Ghostbusters",
 		Year:  1985,
 	})
-	require.EqualError(t, err, "foo")
+	require.EqualError(t, err, "no Template set for gotemplate")
 	require.Nil(t, got)
 }
 
