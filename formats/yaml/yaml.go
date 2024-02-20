@@ -1,3 +1,6 @@
+/*
+Package yaml provides the yaml plugin for Gout
+*/
 package yaml
 
 import (
@@ -5,8 +8,10 @@ import (
 	uyaml "gopkg.in/yaml.v3"
 )
 
+// Formatter is the base structure that holds the yaml plugin stuff
 type Formatter struct{}
 
+// Format satisfies the formats.Formatter interface
 func (w Formatter) Format(v interface{}) ([]byte, error) {
 	return uyaml.Marshal(v)
 }

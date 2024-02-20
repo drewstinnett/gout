@@ -1,3 +1,6 @@
+/*
+Package gout provides a custom G OUTput formatter
+*/
 package gout
 
 import (
@@ -7,8 +10,7 @@ import (
 	"os"
 
 	"github.com/drewstinnett/gout/v2/formats"
-	// Include all the builtin formats by default
-	_ "github.com/drewstinnett/gout/v2/formats/builtin"
+	_ "github.com/drewstinnett/gout/v2/formats/builtin" // Include all the builtin formats by default
 	"github.com/drewstinnett/gout/v2/formats/yaml"
 )
 
@@ -19,8 +21,15 @@ type Gout struct {
 	writer    io.Writer
 }
 
-// Use this for doing things without explicitely creating a new gout, similar to
+// Use this for doing things without explicitly creating a new gout, similar to
 // viper.Viper
+//
+// The pattern for usage is something like:
+// gout.Print("Hello")
+//
+// works similarly to:
+// custom := New()
+// custom.Print("Hello")
 var gi *Gout
 
 func init() {
@@ -36,24 +45,42 @@ func Get() *Gout {
 // will be os.Stdout
 func SetWriter(i io.Writer) { gi.SetWriter(i) }
 
+// SetWriter sets the writer on a custom Gout instance
 func (g *Gout) SetWriter(i io.Writer) {
 	g.writer = i
 }
 
-// SetFormatter sets the Formatter to use for the text.
+// SetFormatter sets the built in Gout instance
 func SetFormatter(f formats.Formatter) { gi.SetFormatter(f) }
 
+// SetFormatter sets the formatter on a custom Gout instance
 func (g *Gout) SetFormatter(f formats.Formatter) {
 	g.formatter = f
+}
+
+// SetFormatterString sets the formatter from the string that the plugin was registered with
+func SetFormatterString(s string) error {
+	return gi.SetFormatterString(s)
+}
+
+// SetFormatterString sets the formatter from the string that the plugin was registered with
+func (g *Gout) SetFormatterString(s string) error {
+	if f, ok := formats.Formats[s]; ok {
+		g.formatter = f()
+
+		return nil
+	}
+	return fmt.Errorf("unknown formatter name: %v", s)
 }
 
 // Print print an interface using the given Formatter and io.Writer
 func Print(v interface{}) (err error) { return gi.Print(v) }
 
+// Print prints the output on a custom Gout instance
 func (g *Gout) Print(v interface{}) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			err = fmt.Errorf("Panic while attempting to format: %v", r)
+			err = fmt.Errorf("panic while attempting to format: %v", r)
 		}
 	}()
 	var b []byte
@@ -69,10 +96,11 @@ func (g *Gout) Print(v interface{}) (err error) {
 // serialized item
 func PrintMulti(v ...interface{}) (err error) { return gi.PrintMulti(v) }
 
+// PrintMulti prints multiple items on a custom gout instance
 func (g *Gout) PrintMulti(v ...interface{}) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			err = fmt.Errorf("Panic while attempting to format: %v", r)
+			err = fmt.Errorf("panic while attempting to format: %v", r)
 		}
 	}()
 	var b []byte
@@ -88,6 +116,7 @@ func (g *Gout) PrintMulti(v ...interface{}) (err error) {
 // MustPrint print an interface and panic if there is any sort of error
 func MustPrint(v interface{}) { gi.MustPrint(v) }
 
+// MustPrint outputs data on a custom Gout instance
 func (g *Gout) MustPrint(v interface{}) {
 	err := g.Print(v)
 	if err != nil {
@@ -99,6 +128,7 @@ func (g *Gout) MustPrint(v interface{}) {
 // error
 func MustPrintMulti(v ...interface{}) { gi.MustPrintMulti(v) }
 
+// MustPrintMulti prints multiple items with a custom Gout instance
 func (g *Gout) MustPrintMulti(v ...interface{}) {
 	err := g.PrintMulti(v)
 	if err != nil {

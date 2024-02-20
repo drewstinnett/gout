@@ -25,6 +25,11 @@ func TestSetGoutWriter(t *testing.T) {
 	// Make sure we can change the formatter
 	c.SetFormatter(plain.Formatter{})
 	require.IsType(t, plain.Formatter{}, c.formatter)
+
+	buf = bytes.Buffer{}
+	c.SetFormatterString("json")
+	c.Print(struct{ Foo string }{Foo: "bar"})
+	require.Equal(t, "{\"Foo\":\"bar\"}\n", buf.String())
 }
 
 func TestNewGoutWithWriter(t *testing.T) {
@@ -54,20 +59,16 @@ func TestPrintError(t *testing.T) {
 
 func TestBuiltinGout(t *testing.T) {
 	require.NotPanics(t, func() { MustPrint("foo") })
-
 	require.NotPanics(t, func() { SetWriter(os.Stderr) })
 	require.NotPanics(t, func() { SetFormatter(json.Formatter{}) })
-
-	err := Print("foo")
-	require.NoError(t, err)
-
-	err = PrintMulti("foo", "bar")
-	require.NoError(t, err)
-
+	require.NoError(t, Print("foo"))
+	require.NoError(t, PrintMulti("foo", "bar"))
 	require.NotPanics(t, func() { MustPrintMulti("foo", "bar") })
+	require.NotNil(t, Get())
 
-	got := Get()
-	require.NotNil(t, got)
+	require.NoError(t, SetFormatterString("plain"))
+	require.EqualError(t, SetFormatterString("never-exists"), "unknown formatter name: never-exists")
+	require.IsType(t, &plain.Formatter{}, Get().formatter)
 }
 
 func TestWriterPrinterMulti(t *testing.T) {

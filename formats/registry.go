@@ -1,11 +1,16 @@
+/*
+Package formats provides some base extractions for format plugins
+*/
 package formats
 
 import (
 	"sort"
 )
 
+// Creator is a generator for new formatter instances
 type Creator func() Formatter
 
+// Formats defines a map of labels to Creators
 var Formats = map[string]Creator{}
 
 // Add a new format creator
