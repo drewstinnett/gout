@@ -40,7 +40,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Test Examples
-        run: for EX in $(ls _examples); do go run ./_examples/$EX; done
+        run: go mod tidy; for EX in $(ls _examples); do go run ./_examples/$EX; done
   coverage:
     runs-on: ubuntu-latest
     steps:
