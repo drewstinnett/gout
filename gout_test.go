@@ -88,5 +88,5 @@ func TestWriterAddNewlines(t *testing.T) {
 	var buf bytes.Buffer
 	c.SetWriter(&buf)
 	c.Print(struct{ Foo string }{Foo: "bar"})
-	require.Equal(t, true, strings.HasSuffix(buf.String(), "\n"), "Printer did not have a linebreak suffix")
+	require.True(t, strings.HasSuffix(buf.String(), "\n"), "Printer did not have a linebreak suffix")
 }
