@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	gout "github.com/drewstinnett/gout/v2"
-	"github.com/drewstinnett/gout/v2/config"
 	"github.com/drewstinnett/gout/v2/formats/gotemplate"
 )
 
@@ -24,9 +23,7 @@ func main() {
 	}
 	g := gout.New()
 	g.SetFormatter(gotemplate.Formatter{
-		Opts: config.FormatterOpts{
-			"template": "{{ range . }}{{ .FirstName }} {{ .LastName }} is {{ .Age }} years old\n{{ end }}",
-		},
+		Template: "{{ range . }}{{ .FirstName }} {{ .LastName }} is {{ .Age }} years old\n{{ end }}",
 	})
 	//"template": "{{ range . }}{{ .FirstName }} {{ .LastName }} is {{ .Age }} years old\n{{ end }}",
 	fmt.Printf("# Format: gotemplate\n## People\n")

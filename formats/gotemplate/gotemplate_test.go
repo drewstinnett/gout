@@ -2,141 +2,71 @@ package gotemplate
 
 import (
 	"testing"
-
-	"github.com/drewstinnett/gout/v2/config"
-	"github.com/stretchr/testify/require"
 )
 
 func TestGTOFormatterFormat(t *testing.T) {
-	f := Formatter{}
-	v := struct {
+	type movie struct {
 		Title string
 		Year  int
-	}{
-		Title: "Ghostbusters",
-		Year:  1985,
 	}
-	got, err := f.Format(v)
-	require.NoError(t, err)
-	require.NotNil(t, got)
-	require.Equal(t, "{Title:Ghostbusters Year:1985}", string(got))
-}
 
-func TestGTOFormatter(t *testing.T) {
-	v := struct {
-		Title string
-		Year  int
+	tests := map[string]struct {
+		given     []movie
+		givenT    string
+		expect    string
+		expectErr string
 	}{
-		Title: "Ghostbusters",
-		Year:  1985,
-	}
-	f := Formatter{
-		Opts: map[string]interface{}{
-			"template": "{{ .Title }}",
+		"custom-template": {
+			given: []movie{
+				{Title: "Ghostbusters", Year: 1985},
+			},
+			givenT: `{{ printf "%+v" . }}`,
+			expect: "{Title:Ghostbusters Year:1985}",
+		},
+		"missing-template": {
+			given: []movie{
+				{Title: "Ghostbusters"},
+			},
+			expectErr: "no Template set for gotemplate",
+		},
+		"bad-template": {
+			given: []movie{
+				{Title: "Ghostbusters"},
+			},
+			givenT:    "{{ .NotExistingField }}",
+			expectErr: `template: item:1:3: executing "item" at <.NotExistingField>: can't evaluate field NotExistingField in type gotemplate.movie`,
+		},
+		"multiple-items": {
+			given: []movie{
+				{Title: "Ghostbusters"},
+				{Title: "Halloween"},
+			},
+			givenT: "{{ range . }}{{ .Title }}\n{{ end }}",
+			expect: "Ghostbusters\nHalloween\n",
 		},
 	}
-	got, err := f.Format(v)
-	require.NoError(t, err)
-	require.NotNil(t, got)
-	require.Equal(t, "Ghostbusters", string(got))
-}
-
-func TestGTOFormatterTemplateError(t *testing.T) {
-	v := struct {
-		Title string
-		Year  int
-	}{
-		Title: "Ghostbusters",
-		Year:  1985,
+	for desc, tt := range tests {
+		// If not multiple 'givens', only pass in a single non-iteralbe interface
+		var realGiven any
+		if len(tt.given) == 1 {
+			realGiven = tt.given[0]
+		} else {
+			realGiven = tt.given
+		}
+		got, err := Formatter{
+			Template: tt.givenT,
+		}.Format(realGiven)
+		if tt.expectErr != "" {
+			if err.Error() != tt.expectErr {
+				t.Fatalf("%v: expected an error of:\n'%v'\nbut got\n'%v", desc, tt.expectErr, err.Error())
+			}
+		} else {
+			if err != nil {
+				t.Fatalf("%v: got an error when none was expected: %v", desc, err)
+			}
+			if tt.expect != string(got) {
+				t.Fatalf("%v: expected %v but got %v", desc, tt.expect, string(got))
+			}
+		}
 	}
-	f := Formatter{
-		Opts: map[string]interface{}{
-			"template": "{{ .NotExistingField }}",
-		},
-	}
-	got, err := f.Format(v)
-	require.Error(t, err)
-	require.Nil(t, got)
-}
-
-func TestGTOFormatterMultiVal(t *testing.T) {
-	v := []struct {
-		Title string
-		Year  int
-	}{
-		{
-			Title: "Ghostbusters",
-			Year:  1985,
-		},
-		{
-			Title: "Halloween",
-			Year:  1978,
-		},
-	}
-	f := Formatter{
-		Opts: map[string]interface{}{
-			"template": "{{ range . }}{{ .Title }}\n{{ end }}",
-		},
-	}
-	got, err := f.Format(v)
-	require.NoError(t, err)
-	require.NotNil(t, got)
-	require.Equal(t, "Ghostbusters\nHalloween\n", string(got))
-}
-
-func TestGTOWithOptsFormatter(t *testing.T) {
-	v := struct {
-		Title string
-		Year  int
-	}{
-		Title: "Ghostbusters",
-		Year:  1985,
-	}
-	f := Formatter{
-		Opts: config.FormatterOpts{
-			"template": "{{ .Title }}",
-		},
-	}
-	got, err := f.Format(v)
-	require.NoError(t, err)
-	require.NotNil(t, got)
-	require.Equal(t, "Ghostbusters", string(got))
-}
-
-/*
-func TestGTOWithOptsFormatterMissingTemplate(t *testing.T) {
-	f := Formatter{
-		Template: "",
-	}
-	v := struct {
-		Title string
-		Year  int
-	}{
-		Title: "Ghostbusters",
-		Year:  1985,
-	}
-	// No 'template' option
-	got, err := f.Format(v)
-	require.Error(t, err)
-	require.Nil(t, got)
-}
-*/
-
-func TestFormatWithContext(t *testing.T) {
-	v := struct {
-		Title string
-		Year  int
-	}{
-		Title: "Ghostbusters",
-		Year:  1985,
-	}
-	f := Formatter{
-		Opts: config.FormatterOpts{
-			"template": "{{ .Title }}",
-		},
-	}
-	got, err := f.Format(v)
-	require.NoError(t, err)
-	require.NotNil(t, got)
-	require.Equal(t, "Ghostbusters", string(got))
 }

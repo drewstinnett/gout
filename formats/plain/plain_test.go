@@ -2,18 +2,20 @@ package plain
 
 import (
 	"testing"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestPlainFormatter(t *testing.T) {
-	f := Formatter{}
-	got, err := f.Format(struct {
+	got, err := Formatter{}.Format(struct {
 		Foo string
 	}{
 		Foo: "bar",
 	})
-	require.NoError(t, err)
-	require.IsType(t, []byte{}, got)
-	require.Equal(t, string("{Foo:bar}\n"), string(got))
+	if err != nil {
+		t.Fatalf("got an unexpected error: %v", err)
+	}
+	expect := "{Foo:bar}\n"
+	gotS := string(got)
+	if gotS != expect {
+		t.Fatalf("expected: %v but got %v", expect, got)
+	}
 }
