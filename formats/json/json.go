@@ -10,15 +10,16 @@ import (
 )
 
 // Formatter holds the base json stuff
-type Formatter struct{}
+type Formatter struct {
+	indent bool
+}
 
-// Format satiesfiles the formats.Formatter interface
-func (w Formatter) Format(v interface{}) ([]byte, error) {
-	var i any
-	if i == nil {
-		return ujson.Marshal(v)
+// Format satisfies the formats.Formatter interface
+func (w Formatter) Format(v any) ([]byte, error) {
+	if w.indent {
+		return ujson.MarshalIndent(v, "", "  ")
 	}
-	return ujson.MarshalIndent(v, "", "  ")
+	return ujson.Marshal(v)
 }
 
 func init() {

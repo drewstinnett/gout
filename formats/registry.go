@@ -30,5 +30,5 @@ func Names() []string {
 
 // Formatter interface that defines how a thing can be formatted for output
 type Formatter interface {
-	Format(interface{}) ([]byte, error)
+	Format(any) ([]byte, error)
 }

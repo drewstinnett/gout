@@ -18,7 +18,7 @@ type Formatter struct {
 }
 
 // Format satisfies the formats.Format interface
-func (w Formatter) Format(v interface{}) ([]byte, error) {
+func (w Formatter) Format(v any) ([]byte, error) {
 	if w.Template == "" {
 		return nil, errors.New("no Template set for gotemplate")
 	}

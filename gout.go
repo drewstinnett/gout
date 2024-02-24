@@ -73,11 +73,11 @@ func (g *Gout) SetFormatterString(s string) error {
 	return fmt.Errorf("unknown formatter name: %v", s)
 }
 
-// Print print an interface using the given Formatter and io.Writer
-func Print(v interface{}) (err error) { return gi.Print(v) }
+// Print print an item using the built in Gout instance
+func Print(v any) (err error) { return gi.Print(v) }
 
-// Print prints the output on a custom Gout instance
-func (g *Gout) Print(v interface{}) (err error) {
+// Print print an item from a custom Gout instance
+func (g *Gout) Print(v any) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = fmt.Errorf("panic while attempting to format: %v", r)
@@ -92,12 +92,12 @@ func (g *Gout) Print(v interface{}) (err error) {
 	return err
 }
 
-// PrintMulti useful when wanting to print multiple interfaces to a single
+// PrintMulti useful when wanting to print multiple items to a single
 // serialized item
-func PrintMulti(v ...interface{}) (err error) { return gi.PrintMulti(v) }
+func PrintMulti(v ...any) (err error) { return gi.PrintMulti(v) }
 
 // PrintMulti prints multiple items on a custom gout instance
-func (g *Gout) PrintMulti(v ...interface{}) (err error) {
+func (g *Gout) PrintMulti(v ...any) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = fmt.Errorf("panic while attempting to format: %v", r)
@@ -113,23 +113,23 @@ func (g *Gout) PrintMulti(v ...interface{}) (err error) {
 	return err
 }
 
-// MustPrint print an interface and panic if there is any sort of error
-func MustPrint(v interface{}) { gi.MustPrint(v) }
+// MustPrint print an item and panic if there is any sort of error
+func MustPrint(v any) { gi.MustPrint(v) }
 
 // MustPrint outputs data on a custom Gout instance
-func (g *Gout) MustPrint(v interface{}) {
+func (g *Gout) MustPrint(v any) {
 	err := g.Print(v)
 	if err != nil {
 		panic(err)
 	}
 }
 
-// MustPrintMulti print an multiple interfaces and panic if there is any sort of
+// MustPrintMulti print an multiple items and panic if there is any sort of
 // error
-func MustPrintMulti(v ...interface{}) { gi.MustPrintMulti(v) }
+func MustPrintMulti(v ...any) { gi.MustPrintMulti(v) }
 
 // MustPrintMulti prints multiple items with a custom Gout instance
-func (g *Gout) MustPrintMulti(v ...interface{}) {
+func (g *Gout) MustPrintMulti(v ...any) {
 	err := g.PrintMulti(v)
 	if err != nil {
 		panic(err)
@@ -168,7 +168,7 @@ func New(opts ...Option) *Gout {
 	return g
 }
 
-func (g *Gout) itemizedFormatter(v ...interface{}) ([]byte, error) {
+func (g *Gout) itemizedFormatter(v ...any) ([]byte, error) {
 	var buf bytes.Buffer
 	for _, item := range v {
 		bi, err := g.formatter.Format(item)
