@@ -12,7 +12,7 @@ import (
 type Formatter struct{}
 
 // Format satisfies the formats.Formatter interface
-func (w Formatter) Format(v interface{}) ([]byte, error) {
+func (w Formatter) Format(v any) ([]byte, error) {
 	return uyaml.Marshal(v)
 }
 

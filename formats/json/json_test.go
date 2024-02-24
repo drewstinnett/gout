@@ -2,21 +2,33 @@ package json
 
 import (
 	"testing"
+
+	"github.com/drewstinnett/gout/v2/formats"
 )
 
 func TestJSONFormatter(t *testing.T) {
-	f := Formatter{}
-	got, err := f.Format(struct {
-		Foo string
+	for desc, tt := range map[string]struct {
+		given  formats.Formatter
+		expect string
 	}{
-		Foo: "bar",
-	})
-	if err != nil {
-		t.Fatalf("got an unexpected error: %v", err)
-	}
-	expect := `{"Foo":"bar"}`
-	gotS := string(got)
-	if expect != gotS {
-		t.Fatalf("expected: %v, but got: %v", expect, got)
+		"default": {
+			given:  Formatter{},
+			expect: `{"Foo":"bar"}`,
+		},
+		"indented": {
+			given: Formatter{
+				indent: true,
+			},
+			expect: "{\n  \"Foo\": \"bar\"\n}",
+		},
+	} {
+		got, err := tt.given.Format(struct{ Foo string }{Foo: "bar"})
+		if err != nil {
+			t.Fatalf("%v: got an unexpected error: %v", desc, err)
+		}
+		gotS := string(got)
+		if tt.expect != gotS {
+			t.Fatalf("%v: expected: %v, but got: %v", desc, tt.expect, gotS)
+		}
 	}
 }
